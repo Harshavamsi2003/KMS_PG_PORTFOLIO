@@ -1,0 +1,133 @@
+/* ══ MENU ══ */
+.menu {
+  padding: 100px 0;
+  background: var(--warm-50);
+  position: relative;
+}
+.menu::before {
+  content: ''; display: block; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--warm-200), transparent);
+}
+
+.menu-hdr { text-align: center; margin-bottom: 56px; }
+.menu-hdr .sec-sub { margin: 0 auto; }
+
+/* Language Toggle */
+.menu-lang-toggle {
+  display: flex; align-items: center; justify-content: center;
+  gap: 4px; margin-bottom: 40px;
+  padding: 4px;
+  background: var(--warm-100);
+  border-radius: var(--r-full);
+  width: fit-content; margin-left: auto; margin-right: auto;
+}
+.lang-btn {
+  padding: 8px 24px;
+  border-radius: var(--r-full);
+  font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer;
+  transition: all 0.25s var(--ease);
+  color: var(--warm-400);
+  background: transparent;
+}
+.lang-btn.active {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: var(--sh-sm);
+}
+
+/* Timing bar */
+.menu-timing-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 36px; flex-wrap: wrap;
+}
+.menu-timing-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 24px;
+  background: var(--white);
+  border: 1px solid var(--warm-100);
+  border-radius: 0;
+  transition: background 0.2s;
+}
+.menu-timing-item:first-child { border-radius: var(--r-md) 0 0 var(--r-md); }
+.menu-timing-item:last-child  { border-radius: 0 var(--r-md) var(--r-md) 0; }
+.menu-timing-item:not(:last-child) { border-right: none; }
+.menu-timing-item:hover { background: var(--warm-50); }
+
+.mti-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.mti-dot-m { background: #f97316; }
+.mti-dot-a { background: #eab308; }
+.mti-dot-n { background: #3b82f6; }
+
+.mti-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--warm-400); }
+.mti-time  { font-size: 13px; font-weight: 600; color: var(--ink); }
+
+/* Table */
+.menu-table-wrap { overflow-x: auto; border-radius: var(--r-lg); box-shadow: var(--sh-md); }
+
+.menu-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--white);
+  font-size: 13px;
+}
+
+.menu-table thead th {
+  padding: 14px 18px;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  background: var(--navy); color: rgba(255,255,255,0.6);
+  text-align: left; white-space: nowrap;
+}
+.menu-table thead th:first-child {
+  background: var(--ink); color: rgba(255,255,255,0.45);
+  border-radius: var(--r-md) 0 0 0;
+  width: 110px;
+}
+.menu-table thead th:last-child { border-radius: 0 var(--r-md) 0 0; }
+
+.menu-table tbody tr { border-bottom: 1px solid var(--warm-100); transition: background 0.15s; }
+.menu-table tbody tr:last-child { border-bottom: none; }
+.menu-table tbody tr:hover { background: var(--warm-50); }
+
+.menu-table td { padding: 13px 18px; vertical-align: top; line-height: 1.55; }
+
+/* Day cell */
+.menu-day-cell {
+  background: var(--warm-50);
+  border-right: 1px solid var(--warm-100);
+}
+.menu-day-en { font-size: 13px; font-weight: 700; color: var(--ink); }
+.menu-day-ta { font-size: 12px; color: var(--warm-400); margin-top: 2px; }
+
+/* Meal cell */
+.menu-meal-en { font-size: 13px; font-weight: 500; color: var(--navy); }
+.menu-meal-ta { font-size: 12px; color: var(--warm-400); margin-top: 2px; display: none; }
+.menu-meal-ta.show { display: block; }
+
+/* Meal column headers */
+.th-morning { border-left: 2px solid rgba(249,115,22,0.2); }
+.th-afternoon { border-left: 2px solid rgba(234,179,8,0.2); }
+.th-night { border-left: 2px solid rgba(59,130,246,0.2); }
+
+.td-morning { border-left: 2px solid rgba(249,115,22,0.12); }
+.td-afternoon { border-left: 2px solid rgba(234,179,8,0.12); }
+.td-night { border-left: 2px solid rgba(59,130,246,0.12); }
+
+/* Note */
+.menu-note {
+  margin-top: 20px; padding: 14px 20px;
+  background: var(--warm-100); border-radius: var(--r-md);
+  font-size: 12.5px; color: var(--warm-500); line-height: 1.6;
+  font-style: italic; text-align: center;
+  border: 1px solid var(--warm-200);
+}
+
+@media (max-width: 640px) {
+  .menu-timing-bar { flex-direction: column; gap: 8px; }
+  .menu-timing-item { border-radius: var(--r-md) !important; border-right: 1px solid var(--warm-100) !important; width: 100%; }
+  .menu-table { font-size: 12px; }
+  .menu-table td, .menu-table th { padding: 10px 12px; }
+}
