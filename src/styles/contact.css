@@ -104,3 +104,40 @@
   .f2 { grid-template-columns: 1fr; }
   .contact-form-box { padding: 26px 20px; }
 }
+/* Icon-only social buttons */
+.csb-phone, .csb-mail {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  transition: all 0.25s;
+  text-decoration: none;
+}
+.csb-phone {
+  background: #f5f4f1; color: var(--ink);
+  border: 1.5px solid var(--warm-200);
+}
+.csb-phone:hover { background: var(--blue); color: #fff; border-color: var(--blue); transform: translateY(-2px); }
+.csb-mail {
+  background: #f5f4f1; color: var(--ink);
+  border: 1.5px solid var(--warm-200);
+}
+.csb-mail:hover { background: #ea4335; color: #fff; border-color: #ea4335; transform: translateY(-2px); }
+.csb-wa {
+  width: 44px; height: 44px; padding: 0;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* Ensure SVG icons are visible in social buttons */
+.csb-phone svg, .csb-mail svg {
+  stroke: var(--ink);
+  flex-shrink: 0;
+}
+.csb-phone:hover svg, .csb-mail:hover svg {
+  stroke: #ffffff;
+}
+.contact-social {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}

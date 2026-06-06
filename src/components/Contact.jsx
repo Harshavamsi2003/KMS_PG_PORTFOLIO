@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import '../styles/contact.css'
 
-const WA = '919710669944'
+const WA1 = '919710669944'
+const WA2 = '918825733398'
 
 export default function Contact() {
   const ref = useRef(null)
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState({
-    name: '', phone: '', email: '', room: '', branch: '', message: ''
+    name: '', phone: '', email: '', hostelType: '', room: '', branch: '', message: ''
   })
 
   useEffect(() => {
@@ -24,9 +25,9 @@ export default function Contact() {
   const submit = e => {
     e.preventDefault()
     const msg = encodeURIComponent(
-      `Hi KMS PG! I want to enquire about a room.\n\nName: ${form.name}\nPhone: ${form.phone}\nRoom: ${form.room}\nBranch: ${form.branch || 'Any'}\nMessage: ${form.message || '—'}`
+      `Hi KMS PG! I want to enquire about a room.\n\nName: ${form.name}\nPhone: ${form.phone}\nType: ${form.hostelType || 'Not specified'}\nRoom: ${form.room}\nBranch: ${form.branch || 'Any'}\nMessage: ${form.message || '—'}`
     )
-    window.open(`https://wa.me/${WA}?text=${msg}`, '_blank')
+    window.open(`https://wa.me/${WA1}?text=${msg}`, '_blank')
     setSubmitted(true)
   }
 
@@ -40,47 +41,49 @@ export default function Contact() {
             <div className="eyebrow">Get In Touch</div>
             <h2 className="sec-title">Book a Room <em>Today</em></h2>
             <p className="sec-sub">
-              Reach out via WhatsApp or call — our owner personally responds
-              to all enquiries quickly.
+              Reach out via WhatsApp or call — our owner personally responds to all enquiries within minutes.
             </p>
 
             <div className="ci-list">
               <div className="ci-item">
                 <div className="ci-icon-wrap">📞</div>
                 <div>
-                  <div className="ci-label">Call / WhatsApp</div>
+                  <div className="ci-label">Primary Contact</div>
                   <div className="ci-value">
                     <a href="tel:+919710669944">+91 97106 69944</a>
                   </div>
                 </div>
               </div>
               <div className="ci-item">
-                <div className="ci-icon-wrap">📍</div>
+                <div className="ci-icon-wrap">📞</div>
                 <div>
-                  <div className="ci-label">Branch 1 — Main</div>
+                  <div className="ci-label">Alternate Contact</div>
                   <div className="ci-value">
-                    Plot 1/39C, 1st Main Rd, Venkateshwara Nagar,
-                    Ramapuram, Chennai 600089
+                    <a href="tel:+918825733398">+91 88257 33398</a>
+                  </div>
+                </div>
+              </div>
+              <div className="ci-item">
+                <div className="ci-icon-wrap">✉️</div>
+                <div>
+                  <div className="ci-label">Email</div>
+                  <div className="ci-value">
+                    <a href="mailto:kmuruganandam1975@gmail.com">kmuruganandam1975@gmail.com</a>
                   </div>
                 </div>
               </div>
               <div className="ci-item">
                 <div className="ci-icon-wrap">📍</div>
                 <div>
-                  <div className="ci-label">Branch 2</div>
-                  <div className="ci-value">
-                    Plot 1/8B, 8th Cross St, Venkateshwara Nagar,
-                    Ramapuram, Chennai 600089
-                  </div>
+                  <div className="ci-label">Branch 1 — Main (Men)</div>
+                  <div className="ci-value">39C, 1st Main Rd, Venkateshwara Nagar, Ramapuram 600116</div>
                 </div>
               </div>
               <div className="ci-item">
                 <div className="ci-icon-wrap">📍</div>
                 <div>
-                  <div className="ci-label">Branch 3</div>
-                  <div className="ci-value">
-                    Plot 1/42, Naidu Street, Ramapuram, Chennai 600089
-                  </div>
+                  <div className="ci-label">Ladies Hostel — Main</div>
+                  <div className="ci-value">No:3, Kalyani Ponnappan Ave, Kothari Nagar, Ramapuram 600089</div>
                 </div>
               </div>
               <div className="ci-item">
@@ -93,29 +96,25 @@ export default function Contact() {
             </div>
 
             <div className="contact-social">
-              
-               <a href={`https://wa.me/${WA}?text=${encodeURIComponent("Hi KMS PG! I'm interested in a room.")}`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <a
+                href={`https://wa.me/${WA1}?text=${encodeURIComponent("Hi KMS PG! I'm interested in a room.")}`}
+                target="_blank" rel="noopener noreferrer"
                 className="csb csb-wa"
+                aria-label="WhatsApp"
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16" height="16"
-                  fill="white"
-                >
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="white">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                 </svg>
-                WhatsApp Us
               </a>
-              
-               <a href="https://maps.google.com/?q=KMS+Mens+PG+Ramapuram+Chennai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="csb csb-map"
-              >
-                📍 Google Maps
+              <a href="tel:+919710669944" className="csb csb-phone" aria-label="Call">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63 19.79 19.79 0 010 2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
+                </svg>
+              </a>
+              <a href="mailto:kmuruganandam1975@gmail.com" className="csb csb-mail" aria-label="Email">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                </svg>
               </a>
             </div>
           </div>
@@ -139,62 +138,56 @@ export default function Contact() {
                     <div className="f2">
                       <div className="fg">
                         <label>Your Name *</label>
-                        <input
-                          type="text" name="name"
-                          placeholder="e.g. Rahul Kumar"
-                          value={form.name} onChange={set} required
-                        />
+                        <input type="text" name="name" placeholder="e.g. Rahul Kumar" value={form.name} onChange={set} required />
                       </div>
                       <div className="fg">
                         <label>Phone Number *</label>
-                        <input
-                          type="tel" name="phone"
-                          placeholder="+91 97106 69944"
-                          value={form.phone} onChange={set} required
-                        />
+                        <input type="tel" name="phone" placeholder="+91 97106 69944" value={form.phone} onChange={set} required />
                       </div>
                     </div>
 
                     <div className="fg">
                       <label>Email (Optional)</label>
-                      <input
-                        type="email" name="email"
-                        placeholder="your@email.com"
-                        value={form.email} onChange={set}
-                      />
+                      <input type="email" name="email" placeholder="your@email.com" value={form.email} onChange={set} />
                     </div>
 
                     <div className="f2">
                       <div className="fg">
-                        <label>Room Type *</label>
-                        <select name="room" value={form.room} onChange={set} required>
-                          <option value="">Select room</option>
-                          <option value="2 Sharing AC">2 Sharing AC — ₹8,500/mo</option>
-                          <option value="2 Sharing Non-AC">2 Sharing Non-AC — ₹6,500/mo</option>
-                          <option value="3 Sharing AC">3 Sharing AC — ₹7,000/mo</option>
-                          <option value="3 Sharing Non-AC">3 Sharing Non-AC — ₹5,500/mo</option>
-                          <option value="4 Sharing">4 Sharing — ₹5,000/mo</option>
-                          <option value="5 Sharing">5 Sharing — ₹4,500/mo</option>
+                        <label>Hostel Type *</label>
+                        <select name="hostelType" value={form.hostelType} onChange={set} required>
+                          <option value="">Select type</option>
+                          <option value="Men's PG">Men&apos;s PG</option>
+                          <option value="Ladies Hostel">Ladies Hostel</option>
                         </select>
                       </div>
                       <div className="fg">
-                        <label>Preferred Branch</label>
-                        <select name="branch" value={form.branch} onChange={set}>
-                          <option value="">Any branch</option>
-                          <option value="Branch 1">Branch 1 — Venkateshwara Nagar</option>
-                          <option value="Branch 2">Branch 2 — 8th Cross Street</option>
-                          <option value="Branch 3">Branch 3 — Naidu Street</option>
+                        <label>Room Type *</label>
+                        <select name="room" value={form.room} onChange={set} required>
+                          <option value="">Select room</option>
+                          <option value="1 Sharing">1 Sharing (Private)</option>
+                          <option value="2 Sharing">2 Sharing</option>
+                          <option value="3 Sharing">3 Sharing</option>
+                          <option value="4 Sharing">4 Sharing</option>
+                          <option value="6 Sharing">6 Sharing</option>
                         </select>
                       </div>
                     </div>
 
                     <div className="fg">
+                      <label>Preferred Branch</label>
+                      <select name="branch" value={form.branch} onChange={set}>
+                        <option value="">Any branch</option>
+                        <option value="Branch 1 — Men's PG, Venkateshwara Nagar">Branch 1 — Men's PG (Main)</option>
+                        <option value="Branch 2 — Men's PG, 8th Cross St">Branch 2 — Men's PG</option>
+                        <option value="Branch 3 — Men's Hostel, Naidu St">Branch 3 — Men's Hostel</option>
+                        <option value="Branch 4 — Men's PG, 2nd Cross St">Branch 4 — Men's PG</option>
+                        <option value="Ladies Hostel — Kothari Nagar">Ladies Hostel — Kothari Nagar</option>
+                      </select>
+                    </div>
+
+                    <div className="fg">
                       <label>Message (Optional)</label>
-                      <textarea
-                        name="message"
-                        placeholder="Joining date, any questions..."
-                        value={form.message} onChange={set}
-                      />
+                      <textarea name="message" placeholder="Joining date, any questions..." value={form.message} onChange={set} />
                     </div>
 
                     <button type="submit" className="f-submit">

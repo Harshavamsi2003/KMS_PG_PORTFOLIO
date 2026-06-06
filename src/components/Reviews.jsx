@@ -81,7 +81,7 @@ export default function Reviews() {
           <div className="rsb-left">
             <div className="rsb-num">4.8</div>
             <div className="rsb-stars">
-              {[1, 2, 3, 4, 5].map(s => <span key={s}>★</span>)}
+              {[1,2,3,4,5].map(s => <span key={s}>★</span>)}
             </div>
             <div className="rsb-label">Overall Rating</div>
           </div>
@@ -91,23 +91,17 @@ export default function Reviews() {
           <div className="rsb-platforms">
             <div className="rsb-platform">
               <span className="rsb-name">Google</span>
-              <div className="rsb-mini">
-                {[1, 2, 3, 4, 5].map(s => <span key={s}>★</span>)}
-              </div>
+              <div className="rsb-mini">{[1,2,3,4,5].map(s => <span key={s}>★</span>)}</div>
               <span className="rsb-count">4.8 · 350+ reviews</span>
             </div>
             <div className="rsb-platform">
               <span className="rsb-name">Justdial</span>
-              <div className="rsb-mini">
-                {[1, 2, 3, 4, 5].map(s => <span key={s}>★</span>)}
-              </div>
+              <div className="rsb-mini">{[1,2,3,4,5].map(s => <span key={s}>★</span>)}</div>
               <span className="rsb-count">4.8 · 354 ratings</span>
             </div>
             <div className="rsb-platform">
               <span className="rsb-name">Hostel 2</span>
-              <div className="rsb-mini">
-                {[1, 2, 3, 4, 5].map(s => <span key={s}>★</span>)}
-              </div>
+              <div className="rsb-mini">{[1,2,3,4,5].map(s => <span key={s}>★</span>)}</div>
               <span className="rsb-count">4.8 · 45 ratings</span>
             </div>
           </div>
@@ -149,7 +143,7 @@ export default function Reviews() {
         <div className="rev-cta rv">
           <p>See all verified reviews on Google Maps</p>
           <a
-            href="https://maps.google.com/?q=KMS+Mens+PG+Ramapuram+Chennai"
+            href="https://www.google.com/maps/place/KMS+Mens+PG/@13.0292459,80.1727729,17z/data=!3m1!5s0x3a5260d9100dc78d:0x90e9862a3a991a34!4m8!3m7!1s0x3a5261145dab3883:0x79462a088909bf04!8m2!3d13.0292459!4d80.1727729!9m1!1b1!16s%2Fg%2F11hds28774?entry=ttu"
             target="_blank"
             rel="noopener noreferrer"
           >

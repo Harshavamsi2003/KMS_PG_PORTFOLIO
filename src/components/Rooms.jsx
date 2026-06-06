@@ -1,105 +1,176 @@
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import '../styles/rooms.css'
 
-const rooms = [
-  {
-    type: '2 Sharing', num: '2', bg: 'rip-bg-2', emoji: '🛏', featured: false,
-    desc: 'Spacious double-occupancy room with individual wardrobes, study table & comfortable beds. Ideal for working professionals.',
-    tags: ['AC / Non-AC', 'Free WiFi', 'Wardrobe', 'Study Table', 'Attached Bath'],
-    priceNonAC: '₹6,500', priceAC: '₹8,500',
-  },
-  {
-    type: '3 Sharing', num: '3', bg: 'rip-bg-3', emoji: '🛌', featured: true,
-    desc: 'Most popular! Comfortable triple-sharing with AC/Non-AC options, ample storage and easy access to shared bathrooms.',
-    tags: ['AC / Non-AC', 'Free WiFi', 'Wardrobe', 'Fan', 'Common Bath'],
-    priceNonAC: '₹5,500', priceAC: '₹7,000',
-  },
-  {
-    type: '4 Sharing', num: '4', bg: 'rip-bg-4', emoji: '🏠', featured: false,
-    desc: 'Affordable four-sharing fully furnished with beds, wardrobes & shared bathrooms. Great value with all amenities.',
-    tags: ['Non-AC', 'Free WiFi', 'Wardrobe', 'Fan', 'Common Bath'],
-    priceNonAC: '₹5,000', priceAC: null,
-  },
-  {
-    type: '5 Sharing', num: '5', bg: 'rip-bg-5', emoji: '🏡', featured: false,
-    desc: 'Most budget-friendly option — clean, WiFi-equipped rooms with daily meals and full amenities included.',
-    tags: ['Non-AC', 'Free WiFi', 'Wardrobe', 'Fan', 'Common Bath'],
-    priceNonAC: '₹4,500', priceAC: null,
-  },
+const menRooms = [
+  { sharing: '1', label: '1 Sharing', withFood: 15000, noFood: 12000, featured: false },
+  { sharing: '2', label: '2 Sharing', withFood: 12000, noFood: 9000,  featured: true  },
+  { sharing: '3', label: '3 Sharing', withFood: 10000, noFood: 7000,  featured: false },
+  { sharing: '4', label: '4 Sharing', withFood: 9500,  noFood: 6500,  featured: false },
+  { sharing: '6', label: '6 Sharing', withFood: 8500,  noFood: 5500,  featured: false },
+]
+
+const ladiesRooms = [
+  { sharing: '1', label: '1 Sharing', withFood: 15000, noFood: 13000, featured: false },
+  { sharing: '2', label: '2 Sharing', withFood: 12000, noFood: 10000, featured: true  },
+  { sharing: '3', label: '3 Sharing', withFood: 11500, noFood: 9500,  featured: false },
+  { sharing: '4', label: '4 Sharing', withFood: 9500,  noFood: 7500,  featured: false },
+  { sharing: '6', label: '6 Sharing', withFood: 8500,  noFood: 6000,  featured: false },
 ]
 
 export default function Rooms() {
+  const [tab, setTab] = useState('men')
   const ref = useRef(null)
+
   useEffect(() => {
     const obs = new IntersectionObserver(
-      es => es.forEach(e => e.isIntersecting && e.target.classList.add('vis')),
-      { threshold: 0.1 }
+      entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('vis')),
+      { threshold: 0.05 }
     )
-    ref.current?.querySelectorAll('.rv,.rvl,.rvr').forEach(el => obs.observe(el))
+    const els = ref.current ? ref.current.querySelectorAll('.rv,.rvl,.rvr') : []
+    els.forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [])
+
+  const rooms = tab === 'men' ? menRooms : ladiesRooms
 
   return (
     <section className="rooms" id="rooms" ref={ref}>
       <div className="container">
-        <div className="rooms-hdr rv">
-          <div className="eyebrow">Accommodation</div>
+
+        <div className="rooms-header rv">
+          <span className="eyebrow">Accommodation</span>
           <h2 className="sec-title">Choose Your <em>Perfect Room</em></h2>
           <p className="sec-sub">
-            All rooms are fully furnished, cleaned daily. AC & Non-AC options available.
-            2, 3, 4 &amp; 5 sharing rooms — 3 meals included every day.
+            All rooms are fully furnished, AC-equipped and cleaned daily.
+            Food is optional at ₹3,000/month extra — 3 home-cooked South Indian meals daily.
           </p>
         </div>
 
-        <div className="rooms-grid">
-          {rooms.map((r, i) => (
-            <div
-              key={r.type}
-              className={`room-card rv ${r.featured ? 'featured' : ''}`}
-              style={{ transitionDelay: `${i * 0.1}s` }}
-            >
-              {r.featured && <div className="room-badge">Most Popular</div>}
+        {/* Gender Toggle */}
+        <div className="rooms-toggle rv">
+          <button
+            className={'rt-btn' + (tab === 'men' ? ' active' : '')}
+            onClick={() => setTab('men')}
+          >
+            <span className="rt-icon">👨</span>
+            Men&apos;s PG
+          </button>
+          <button
+            className={'rt-btn' + (tab === 'ladies' ? ' active' : '')}
+            onClick={() => setTab('ladies')}
+          >
+            <span className="rt-icon">👩</span>
+            Ladies Hostel
+          </button>
+        </div>
 
-              {/* Image / Placeholder */}
-              <div className="room-img">
-                <div className={`room-img-placeholder ${r.bg}`}>
-                  <div className="rip-num">{r.num}</div>
-                  <div className="rip-icon">{r.emoji}</div>
-                  <div className="rip-label">{r.type}</div>
-                </div>
-                <div className="room-img-add">+ Add Photo</div>
+        <div className="rooms-cat-label rv">
+          {tab === 'men'
+            ? <span>🏠 Men&apos;s PG — Ramapuram · 4 Branches</span>
+            : <span>🏠 Ladies Hostel · Kothari Nagar, Ramapuram (2 more branches nearby)</span>
+          }
+        </div>
+
+        {/* Pricing note */}
+        <div className="rooms-pricing-note rv">
+          <div className="rpn-item">
+            <span className="rpn-icon">🍽</span>
+            <div>
+              <span className="rpn-title">With Food</span>
+              <span className="rpn-desc">3 meals/day included</span>
+            </div>
+          </div>
+          <div className="rpn-divider" />
+          <div className="rpn-item">
+            <span className="rpn-icon">🏠</span>
+            <div>
+              <span className="rpn-title">Without Food</span>
+              <span className="rpn-desc">Room only — no food charges</span>
+            </div>
+          </div>
+          <div className="rpn-divider" />
+          <div className="rpn-item">
+            <span className="rpn-icon">❄️</span>
+            <div>
+              <span className="rpn-title">All AC Rooms</span>
+              <span className="rpn-desc">Every room is air-conditioned</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Room cards */}
+        <div className="rooms-grid">
+          {rooms.map((room, i) => (
+            <div
+              key={tab + room.sharing}
+              className={'room-card rv' + (room.featured ? ' featured' : '')}
+              style={{ transitionDelay: (i * 0.08) + 's' }}
+            >
+              {room.featured && <div className="room-badge">Most Popular</div>}
+
+              <div className={'room-visual rv-' + room.sharing}>
+                <span className="room-visual-num">{room.sharing}</span>
+                <span className="room-visual-label">SHARING</span>
               </div>
 
               <div className="room-body">
-                <div className="room-type">{r.type}</div>
-                <p className="room-desc">{r.desc}</p>
-                <div className="room-tags">
-                  {r.tags.map(t => <span key={t} className="room-tag">{t}</span>)}
-                </div>
-                <div className="room-footer">
-                  <div className="room-price">
-                    <div className="room-price-num">
-                      {r.priceNonAC}<span className="room-price-mo"> /mo</span>
+                <h3 className="room-title">{room.label}</h3>
+
+                <div className="room-pricing">
+                  <div className="room-price-row">
+                    <div className="rpr-left">
+                      <span className="rpr-type">Without Food</span>
+                      <span className="rpr-rent">
+                        ₹{room.noFood.toLocaleString()}
+                        <span className="rpr-mo">/mo</span>
+                      </span>
+                      <span className="rpr-note">room only</span>
                     </div>
-                    {r.priceAC && <div className="room-price-ac">AC: {r.priceAC}/mo</div>}
+                    <div className="rpr-divider" />
+                    <div className="rpr-right">
+                      <span className="rpr-plus-food">With Food</span>
+                      <span className="rpr-total">
+                        ₹{room.withFood.toLocaleString()}
+                        <span className="rpr-mo">/mo</span>
+                      </span>
+                      <span className="rpr-note">room + 3 meals</span>
+                    </div>
                   </div>
-                  <a href="#contact" className="room-enq">Enquire →</a>
                 </div>
+
+                <a href="#contact" className="room-cta">Enquire Now</a>
               </div>
             </div>
           ))}
         </div>
 
+        {/* Food banner */}
         <div className="rooms-food-banner rv">
-          <div className="rfb-icon">🍛</div>
-          <div>
-            <div className="rfb-title">3 Home-Cooked Meals Included Every Day</div>
-            <div className="rfb-desc">
-              Breakfast, Lunch &amp; Dinner — authentic South Indian home-style food. Hygienic kitchen,
-              quality ingredients. Veg options available. All included in monthly rent, no hidden charges.
+          <div className="rfb-left">
+            <span className="rfb-icon">🍽</span>
+            <div>
+              <p className="rfb-title">What&apos;s Included in Food</p>
+              <p className="rfb-sub">3 home-cooked South Indian meals daily — Breakfast, Lunch and Dinner</p>
+            </div>
+          </div>
+          <div className="rfb-meals">
+            <div className="rfb-meal">
+              <span className="rfb-meal-time">7:30 – 9:30 AM</span>
+              <span className="rfb-meal-name">Breakfast</span>
+            </div>
+            <div className="rfb-meal-dot" />
+            <div className="rfb-meal">
+              <span className="rfb-meal-time">12:30 – 2:30 PM</span>
+              <span className="rfb-meal-name">Lunch</span>
+            </div>
+            <div className="rfb-meal-dot" />
+            <div className="rfb-meal">
+              <span className="rfb-meal-time">7:30 – 9:30 PM</span>
+              <span className="rfb-meal-name">Dinner</span>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   )
