@@ -1,247 +1,430 @@
-/* ══ HERO — Premium ══ */
+/* ══════════════════════════════════════
+   KMS PG — HERO  ·  Premium v7
+   Compact "homepage" composition —
+   tagline-led, not wordmark-led — plus
+   the "Resident Access Card" signature.
+══════════════════════════════════════ */
 
-@keyframes heroFadeUp {
-  from { opacity: 0; transform: translateY(28px); }
+@keyframes heroUp {
+  from { opacity: 0; transform: translateY(26px); }
   to   { opacity: 1; transform: none; }
 }
-@keyframes orbFloat {
-  0%,100% { transform: translate(0,0) scale(1); }
-  33%      { transform: translate(28px,-36px) scale(1.07); }
-  66%      { transform: translate(-18px,18px) scale(0.96); }
+@keyframes heroRight {
+  from { opacity: 0; transform: translateX(36px); }
+  to   { opacity: 1; transform: none; }
 }
-@keyframes orbFloat2 {
-  0%,100% { transform: translate(0,0) scale(1); }
-  40%      { transform: translate(-36px,28px) scale(1.09); }
-  70%      { transform: translate(22px,-18px) scale(0.93); }
+/* Gentle continuous float/sway — picks up exactly where heroRight
+   leaves off (both settle at "transform:none"), so there's no jump.
+   This lives on .hero-right (the wrapper), while hover-lift lives on
+   .hero-card (the inner card) — two different elements, so they never
+   fight over the same `transform` property. */
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-9px) rotate(0.6deg); }
+}
+@keyframes livePulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%     { opacity: 0.3; transform: scale(1.7); }
+}
+@keyframes shimmer {
+  0%   { transform: translateX(-120%) skewX(-20deg); }
+  100% { transform: translateX(260%) skewX(-20deg); }
 }
 @keyframes waFloat {
   0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-5px); }
+  50%     { transform: translateY(-5px); }
 }
-@keyframes badgeIn {
-  from { opacity:0; transform:translateY(8px) scale(0.94); }
-  to   { opacity:1; transform:none; }
+@keyframes statIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes glowPulse {
+  0%,100% { opacity: 0.35; transform: scale(1); }
+  50%     { opacity: 0.65; transform: scale(1.08); }
+}
+@keyframes markerPulseHero {
+  0%,100% { box-shadow: 0 0 0 0 rgba(204,157,68,0.35); }
+  50%     { box-shadow: 0 0 0 5px rgba(204,157,68,0); }
+}
+@keyframes underlineDraw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes underlineDrawCenter {
+  from { transform: translateX(-50%) scaleX(0); }
+  to   { transform: translateX(-50%) scaleX(1); }
+}
+@keyframes floatSlow {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-10px); }
 }
 
-/* Delays */
-.rv-delay-0 { animation: heroFadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
-.rv-delay-1 { animation: heroFadeUp 0.85s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
-.rv-delay-2 { animation: heroFadeUp 0.85s cubic-bezier(0.22,1,0.36,1) 0.32s both; }
-.rv-delay-3 { animation: heroFadeUp 0.85s cubic-bezier(0.22,1,0.36,1) 0.46s both; }
-.rv-delay-4 { animation: heroFadeUp 0.85s cubic-bezier(0.22,1,0.36,1) 0.60s both; }
-.rv-delay-5 { animation: heroFadeUp 0.85s cubic-bezier(0.22,1,0.36,1) 0.74s both; }
-
+/* ── Root — fills the screen on desktop (no peek of the next
+   section), but stays content-sized/compact on tablet & mobile
+   (overridden in the ≤1024px media query below) ── */
 .hero {
-  min-height: 100svh;
-  background: #ffffff;
-  position: relative; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  padding: 120px 0 80px;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 152px 0 90px;
 }
 
-/* Subtle dot grid */
-.hero-pattern {
+/* ── Background — deep navy gradient with soft glows + fine grid,
+   no photography, all CSS ── */
+.hero-bg-base {
   position: absolute; inset: 0;
-  background-image: radial-gradient(circle, #d4d9ed 1px, transparent 1px);
-  background-size: 32px 32px;
-  opacity: 0.40; pointer-events: none;
+  background: var(--grad-dark);
+}
+.hero-bg-base::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 120% 90% at 50% 30%, rgba(59,108,244,0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 140% 100% at 50% 100%, rgba(0,0,0,0.30) 0%, transparent 60%);
 }
 
-/* Orbs */
+/* Fine grid — drifts very slightly with the cursor for premium depth.
+   (--px / --py are set from Hero.jsx's mousemove listener.) */
+.hero-grid-overlay {
+  position: absolute; inset: -40px;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 28% 32%, black 0%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 28% 32%, black 0%, transparent 75%);
+  transform: translate(var(--px, 0px), var(--py, 0px));
+  transition: transform 0.4s ease-out;
+  will-change: transform;
+}
+
+.hero-noise { display: none; }
+
 .hero-orb {
-  position: absolute; border-radius: 50%;
-  pointer-events: none; filter: blur(55px);
+  position: absolute; border-radius: 50%; pointer-events: none;
+  animation: floatSlow 9s ease-in-out infinite;
+  will-change: transform;
 }
 .hero-orb-1 {
-  width: 700px; height: 700px;
-  background: radial-gradient(circle, rgba(59,108,244,0.09) 0%, transparent 70%);
-  top: -250px; left: -200px;
-  animation: orbFloat 14s ease-in-out infinite;
+  width: 520px; height: 520px; top: -200px; left: -160px;
+  background: radial-gradient(circle, rgba(59,108,244,0.26) 0%, transparent 70%);
 }
 .hero-orb-2 {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(93,147,246,0.07) 0%, transparent 70%);
-  bottom: -120px; right: -150px;
-  animation: orbFloat2 17s ease-in-out infinite;
+  width: 400px; height: 400px; bottom: -180px; right: -120px;
+  background: radial-gradient(circle, rgba(204,157,68,0.14) 0%, transparent 70%);
+  animation-delay: 1.5s;
 }
 .hero-orb-3 {
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(232,184,75,0.06) 0%, transparent 70%);
-  top: 40%; right: 8%;
-  filter: blur(40px);
-  animation: orbFloat 20s ease-in-out infinite reverse;
+  width: 260px; height: 260px; top: 30%; right: 8%;
+  background: radial-gradient(circle, rgba(147,175,248,0.10) 0%, transparent 70%);
+  animation-delay: 3s;
 }
 
-/* Container — full width with side padding */
+.hero-topline {
+  position: absolute; top: 0; left: 0; right: 0; height: 1px; z-index: 10;
+  background: linear-gradient(90deg, transparent 0%, #5b85f5 30%, #cc9d44 55%, #93aff8 75%, transparent 100%);
+  opacity: 0.85;
+}
+
+/* ── Layout ── */
 .hero-container {
   position: relative; z-index: 2;
-  width: 100%; max-width: 1160px;
+  width: 100%; max-width: 1180px;
   margin: 0 auto;
-  padding: 0 28px;
-  text-align: center;
-  display: flex; flex-direction: column; align-items: center;
-  gap: 0;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 64px;
+  align-items: center;
 }
 
-/* Eyebrow */
+/* ════════════
+   LEFT
+════════════ */
+.hero-left { display: flex; flex-direction: column; min-width: 0; }
+
 .hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; gap: 14px;
   font-family: var(--font-body);
-  font-size: 10px; font-weight: 600;
-  letter-spacing: 4px; text-transform: uppercase;
-  color: var(--warm-400);
-  margin-bottom: 22px;
-  padding: 7px 20px;
-  background: var(--warm-50);
-  border: 1px solid var(--warm-100);
-  border-radius: 9999px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 2.2px; text-transform: uppercase;
+  color: var(--gold-lt);
+  margin-bottom: 26px;
+  width: fit-content;
+  max-width: 100%;
+  animation: heroUp 0.8s var(--ease) 0.05s both;
 }
-.hero-dot {
-  display: inline-block;
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--blue); opacity: 0.6;
+.hero-eyebrow::before {
+  content: '';
+  width: 26px; height: 1px;
+  background: linear-gradient(90deg, var(--gold-lt), rgba(204,157,68,0));
+  flex-shrink: 0;
 }
 
-/* Title */
+/* Title — tagline-led: "A Home / Away from Home", not a giant
+   wordmark. The brand name lives in the navbar logo. */
 .hero-title {
   display: flex; flex-direction: column;
-  align-items: center; gap: 6px;
-  margin: 0 0 24px;
+  gap: 2px; margin: 0 0 20px;
 }
-.hero-title-main {
+.hero-title-line {
   font-family: var(--font-display);
-  font-size: clamp(4.5rem, 12vw, 9rem);
-  font-weight: 900;
-  color: var(--ink);
-  line-height: 1; letter-spacing: -5px;
-  display: block;
+  font-size: clamp(2.5rem, 4.6vw, 3.75rem);
+  font-weight: 600; line-height: 1.08; letter-spacing: -1px;
+  color: #ffffff;
 }
-.hero-title-italic {
-  font-family: var(--font-display);
-  font-size: clamp(1.3rem, 3.8vw, 2.4rem);
-  font-weight: 400; font-style: italic;
-  color: var(--blue);
-  line-height: 1.3; letter-spacing: -0.5px;
-  display: block;
-}
-
-/* Quote */
-.hero-quote {
-  font-family: var(--font-body);
-  font-size: clamp(0.88rem, 2vw, 1.05rem);
-  font-weight: 300;
-  color: var(--warm-400);
-  line-height: 1.85;
-  max-width: 520px;
-  margin-bottom: 36px;
+.hero-title-line:nth-child(1) { animation: heroUp 0.85s var(--ease) 0.12s both; }
+.hero-title-line:nth-child(2) { animation: heroUp 0.85s var(--ease) 0.20s both; }
+.hero-title-line em {
   font-style: italic;
+  font-weight: 500;
+  color: var(--gold-lt);
 }
 
-/* Action buttons */
+/* Description — plain, readable paragraph (replaces the old quote
+   treatment) */
+.hero-desc {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.3vw, 1.04rem);
+  font-weight: 300;
+  color: rgba(255,255,255,0.56);
+  line-height: 1.8;
+  max-width: 480px;
+  margin: 0 0 36px;
+  animation: heroUp 0.85s var(--ease) 0.3s both;
+}
+.hero-desc strong {
+  font-weight: 600;
+  color: rgba(255,255,255,0.84);
+}
+
+/* Buttons */
 .hero-actions {
-  display: flex; align-items: center; justify-content: center;
-  gap: 12px; flex-wrap: wrap;
-  margin-bottom: 48px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  animation: heroUp 0.85s var(--ease) 0.4s both;
 }
 
 .hero-btn-primary {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 15px 36px;
-  background: var(--ink); color: #fff;
-  font-family: var(--font-body);
-  font-size: 14px; font-weight: 600;
-  border-radius: 9999px; text-decoration: none;
-  letter-spacing: 0.3px;
-  transition: background 0.25s, transform 0.25s, box-shadow 0.25s, gap 0.25s;
-  box-shadow: 0 4px 22px rgba(8,9,15,0.18);
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 16px 34px;
+  background: var(--grad-gold);
+  color: #241902;
+  font-family: var(--font-body); font-size: 14px; font-weight: 700;
+  border-radius: 9999px; text-decoration: none; letter-spacing: 0.3px;
+  box-shadow: 0 14px 36px rgba(204,157,68,0.34), inset 0 1px 0 rgba(255,255,255,0.3);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s, gap 0.25s;
   position: relative; overflow: hidden;
 }
 .hero-btn-primary::after {
-  content: ''; position: absolute; inset: 0;
-  background: var(--grad-blue); opacity: 0;
-  transition: opacity 0.3s;
+  content: ''; position: absolute;
+  top: 0; left: 0; width: 35%; height: 100%;
+  background: rgba(255,255,255,0.22);
+  animation: shimmer 3.5s ease-in-out 1.8s infinite;
 }
-.hero-btn-primary:hover::after { opacity: 1; }
-.hero-btn-primary span, .hero-btn-primary svg { position: relative; z-index: 1; }
-.hero-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(59,108,244,0.38); gap: 12px; }
+.hero-btn-primary:hover {
+  transform: translateY(-3px); gap: 13px;
+  box-shadow: 0 20px 48px rgba(204,157,68,0.42), inset 0 1px 0 rgba(255,255,255,0.34);
+}
+.hero-btn-primary:active { transform: translateY(-1px) scale(0.98); }
 
-.hero-btn-secondary {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 14px 30px;
-  background: #25D366; color: #fff;
+.hero-link-ghost {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 16px 4px;
+  color: rgba(255,255,255,0.78);
+  font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  text-decoration: none; letter-spacing: 0.2px;
+  border-bottom: 1.5px solid rgba(255,255,255,0.28);
+  transition: color 0.25s, border-color 0.25s;
+}
+.hero-link-ghost:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,0.6);
+}
+
+/* ════════════
+   RIGHT — "RESIDENT ACCESS CARD"
+════════════ */
+.hero-right {
+  animation:
+    heroRight  0.9s var(--ease) 0.22s both,
+    cardFloat  7s   ease-in-out 1.12s infinite;
+  will-change: transform;
+}
+
+.hero-card {
+  background: linear-gradient(168deg, #fdfbf6 0%, #f3ebd9 100%);
+  border-radius: 24px;
+  padding: 28px 26px 24px;
+  position: relative; overflow: hidden;
+  box-shadow:
+    0 32px 80px rgba(0,0,0,0.42),
+    0 1px 0 rgba(255,255,255,0.5) inset;
+  transform: rotate(-1deg);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s;
+}
+/* Foil corner — top right */
+.hero-card::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 80px; height: 80px;
+  background: var(--grad-gold);
+  border-radius: 0 24px 0 100%;
+  opacity: 0.95;
+}
+/* Tactile paper-grain — pure CSS, no images */
+.hero-card::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background-image:
+    radial-gradient(rgba(36,31,22,0.05) 0.6px, transparent 0.6px),
+    radial-gradient(rgba(255,255,255,0.35) 0.6px, transparent 0.6px);
+  background-size: 3px 3px, 5px 5px;
+  background-position: 0 0, 1.5px 1.5px;
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+}
+.hero-card:hover {
+  transform: rotate(0deg) translateY(-6px);
+  box-shadow: 0 42px 100px rgba(0,0,0,0.48), 0 1px 0 rgba(255,255,255,0.5) inset;
+}
+
+.hero-card-glow {
+  position: absolute; top: -90px; right: -90px;
+  width: 240px; height: 240px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(204,157,68,0.16) 0%, transparent 70%);
+  pointer-events: none;
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+/* Card top row — small label + availability pill, side by side */
+.hero-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 22px;
+  position: relative; z-index: 1;
+}
+.hero-card-label {
   font-family: var(--font-body);
-  font-size: 14px; font-weight: 600;
-  border-radius: 9999px; text-decoration: none;
-  transition: transform 0.25s, box-shadow 0.25s;
-  box-shadow: 0 4px 18px rgba(37,211,102,0.28);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--warm-400);
 }
-.hero-btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(37,211,102,0.48); }
 
-/* Stats */
+/* Available pill */
+.hero-card-available {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 700;
+  color: #1e7a4c; letter-spacing: 0.4px;
+  padding: 5px 13px;
+  background: rgba(30,122,76,0.10);
+  border: 1px solid rgba(30,122,76,0.24);
+  border-radius: 9999px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.hero-live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #1e7a4c; flex-shrink: 0;
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+/* Stats grid */
 .hero-stats {
-  display: flex; align-items: center; justify-content: center;
-  padding: 22px 40px;
-  background: var(--warm-50); border: 1px solid var(--warm-100);
-  border-radius: 20px;
-  box-shadow: 0 4px 24px rgba(8,9,15,0.06);
-  flex-wrap: wrap; gap: 0;
-  width: 100%; max-width: 580px;
-  margin-bottom: 32px;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 15px 18px;
+  margin-bottom: 20px;
+  position: relative; z-index: 1;
 }
 .hero-stat {
-  display: flex; flex-direction: column; align-items: center;
-  padding: 0 28px;
-  transition: transform 0.25s;
+  display: flex; flex-direction: column;
+  animation: statIn 0.6s var(--ease) both;
 }
-.hero-stat:hover { transform: translateY(-2px); }
-.hero-stat-divider { width: 1px; height: 36px; background: var(--warm-200); flex-shrink: 0; }
 .hero-stat-val {
   font-family: var(--font-display);
-  font-size: 1.75rem; font-weight: 700;
-  color: var(--ink); line-height: 1; letter-spacing: -0.5px;
+  font-size: 1.6rem; font-weight: 700;
+  color: #241f16; line-height: 1; margin-bottom: 5px;
+  letter-spacing: -0.3px;
 }
 .hero-stat-lbl {
-  font-family: var(--font-body);
-  font-size: 10px; font-weight: 400;
-  color: var(--warm-400); margin-top: 5px;
-  letter-spacing: 0.3px; white-space: nowrap;
+  font-size: 9.5px; font-weight: 600;
+  color: var(--warm-400); letter-spacing: 0.8px;
+  text-transform: uppercase;
 }
 
-/* Trust badges */
-.hero-badges {
-  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+/* Perforated divider — the signature ticket-stub line */
+.hero-card-divider {
+  position: relative;
+  height: 0;
+  margin: 4px -26px 20px;
+  padding: 0 16px;
+  border-top: 2px dashed rgba(36,31,22,0.18);
 }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 6px 14px;
-  background: var(--white); border: 1px solid var(--warm-100);
-  border-radius: 9999px;
-  font-size: 12px; font-weight: 500;
-  color: var(--warm-500);
-  box-shadow: 0 1px 6px rgba(8,9,15,0.05);
-  transition: all 0.25s;
-  animation: badgeIn 0.5s var(--ease) both;
+.hero-card-divider::before,
+.hero-card-divider::after {
+  content: '';
+  position: absolute; top: -6px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--grad-dark);
 }
-.hero-badge:nth-child(1) { animation-delay: 0.78s; }
-.hero-badge:nth-child(2) { animation-delay: 0.86s; }
-.hero-badge:nth-child(3) { animation-delay: 0.94s; }
-.hero-badge:nth-child(4) { animation-delay: 1.02s; }
-.hero-badge:nth-child(5) { animation-delay: 1.10s; }
+.hero-card-divider::before { left: -6px; }
+.hero-card-divider::after  { right: -6px; }
 
-.hero-badge:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-  background: var(--blue-pale);
+/* Price */
+.hero-price-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+  position: relative; z-index: 1;
+}
+.hero-price-from {
+  font-size: 10.5px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--warm-400);
+}
+.hero-price-val {
+  font-family: var(--font-display);
+  font-size: 1.9rem; font-weight: 700;
+  color: #241f16;
+  line-height: 1;
+}
+.hero-price-val em {
+  font-style: normal;
+  font-size: 0.82rem; font-weight: 400;
+  color: var(--warm-400);
+}
+
+/* Card CTA */
+.hero-card-cta {
+  display: block; width: 100%;
+  padding: 15px 0;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-body); font-size: 13.5px; font-weight: 700;
+  text-align: center; border-radius: 9999px;
+  text-decoration: none; letter-spacing: 0.3px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s, background 0.25s;
+  position: relative; overflow: hidden; z-index: 1;
+}
+.hero-card-cta::after {
+  content: ''; position: absolute;
+  top: 0; left: 0; width: 35%; height: 100%;
+  background: rgba(255,255,255,0.10);
+  animation: shimmer 3.5s ease-in-out 2.2s infinite;
+}
+.hero-card-cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(59,108,244,0.12);
+  background: var(--blue-deep);
+  box-shadow: 0 16px 38px rgba(37,70,176,0.4);
 }
-.hero-badge-ladies:hover {
-  border-color: #ec4899;
-  color: #ec4899;
-  background: #fdf2f8;
-}
+.hero-card-cta:active { transform: translateY(0) scale(0.98); }
 
-/* WhatsApp float */
+/* ── WhatsApp float ── */
 .wa-float {
   position: fixed; bottom: 24px; right: 24px;
   display: flex; align-items: center; gap: 9px;
@@ -254,46 +437,103 @@
   animation: waFloat 3s ease-in-out infinite;
   transition: box-shadow 0.25s;
 }
-.wa-float:hover { box-shadow: 0 10px 32px rgba(37,211,102,0.55); animation-play-state: paused; }
-.wa-float-icon { width: 17px; height: 17px; flex-shrink: 0; }
+.wa-float:hover {
+  box-shadow: 0 10px 32px rgba(37,211,102,0.55);
+  animation-play-state: paused;
+}
+.wa-float-icon { width: 18px; height: 18px; flex-shrink: 0; }
 .wa-float-text { white-space: nowrap; }
 
-/* ════ RESPONSIVE ════ */
-@media (max-width: 768px) {
-  .hero { padding: 110px 0 70px; }
-  .hero-stat { padding: 0 18px; }
-  .hero-stats { padding: 20px 20px; max-width: 100%; }
+/* ══════════════════
+   TABLET ≤ 1024px
+══════════════════ */
+@media (max-width: 1024px) {
+  .hero {
+    min-height: auto;
+  }
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 0 28px;
+  }
+  .hero-right { max-width: 440px; margin: 0 auto; width: 100%; }
+  .hero-card { transform: none; }
 }
 
-@media (max-width: 540px) {
-  .hero { padding: 100px 0 60px; }
-  .hero-container { padding: 0 18px; }
-  .hero-title-main { font-size: clamp(3.2rem, 17vw, 4.5rem); letter-spacing: -2.5px; }
-  .hero-title-italic { font-size: clamp(1.1rem, 5.5vw, 1.4rem); }
-  .hero-quote { font-size: 0.9rem; max-width: 100%; }
-  .hero-actions { flex-direction: column; width: 100%; max-width: 290px; gap: 10px; }
-  .hero-btn-primary, .hero-btn-secondary { width: 100%; padding: 14px 20px; }
-  .hero-stats {
-    display: grid; grid-template-columns: 1fr 1fr;
-    padding: 0; border-radius: 16px; overflow: hidden;
-  }
-  .hero-stat {
-    padding: 16px 10px;
-    border-right: 1px solid var(--warm-100);
-    border-bottom: 1px solid var(--warm-100);
-  }
-  .hero-stat:nth-child(3) { border-right: none; }
-  .hero-stat:nth-child(5), .hero-stat:nth-child(7) { border-bottom: none; }
-  .hero-stat:nth-child(7) { border-right: none; }
-  .hero-stat-divider { display: none; }
-  .hero-stat-val { font-size: 1.45rem; }
+/* ══════════════════
+   SMALL TABLET / LARGE PHONE  481–768px
+══════════════════ */
+@media (max-width: 768px) {
+  .hero { padding: 132px 0 76px; }
+  .hero-right { max-width: 400px; }
+}
+
+/* ══════════════════
+   MOBILE ≤ 640px
+══════════════════ */
+@media (max-width: 640px) {
+  .hero { padding: 100px 0 32px; }
+  .hero-container { padding: 0 18px; gap: 28px; }
+
+  .hero-eyebrow { font-size: 10px; letter-spacing: 1.4px; gap: 10px; margin-bottom: 16px; white-space: normal; line-height: 1.4; }
+
+  .hero-title { margin-bottom: 12px; gap: 0; }
+  .hero-title-line { font-size: clamp(1.9rem, 8vw, 2.4rem); }
+
+  .hero-desc { font-size: 0.875rem; line-height: 1.65; margin-bottom: 20px; max-width: 100%; }
+
+  .hero-actions { flex-direction: row; flex-wrap: wrap; gap: 14px 18px; }
+  .hero-btn-primary { padding: 13px 26px; }
+  .hero-link-ghost { padding: 13px 0; }
+
+  .hero-right { max-width: 360px; }
+  .hero-card { padding: 22px 19px 19px; border-radius: 20px; }
+  .hero-card-top { margin-bottom: 18px; }
+  .hero-card-divider { margin: 4px -19px 16px; }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 12px 16px; margin-bottom: 16px; }
+  .hero-stat-val { font-size: 1.35rem; }
+  .hero-price-row { margin-bottom: 14px; }
+
   .wa-float-text { display: none; }
   .wa-float { padding: 13px; border-radius: 50%; }
-  .hero-badges { gap: 6px; }
-  .hero-badge { font-size: 11px; padding: 5px 11px; }
 }
 
+/* ══════════════════
+   SMALL PHONE ≤ 380px
+══════════════════ */
 @media (max-width: 380px) {
-  .hero-title-main { font-size: 2.8rem; letter-spacing: -2px; }
-  .hero-title-italic { font-size: 1.05rem; }
+  .hero-title-line { font-size: 1.9rem; }
+  .hero-stats { gap: 14px 12px; }
+  .hero-stat-val { font-size: 1.25rem; }
+  .hero-price-val { font-size: 1.6rem; }
+}
+
+/* ══════════════════
+   SHORT / LANDSCAPE PHONES
+══════════════════ */
+@media (max-height: 480px) and (orientation: landscape) {
+  .hero { padding: 110px 0 50px; }
+  .hero-container { grid-template-columns: 1fr 300px; gap: 36px; align-items: center; }
+  .hero-title-line { font-size: clamp(1.8rem, 6vw, 2.4rem); }
+  .hero-desc { margin-bottom: 20px; }
+}
+
+/* ══════════════════
+   ACCESSIBILITY
+   These selectors are intentionally MORE specific than the global
+   `*, *::before, *::after { animation-iteration-count: 1 !important }`
+   reduced-motion rule, so the hero's decorative loops (shimmer
+   sweeps, the live-availability pulse, the soft glow breathing and
+   the card's gentle float) keep running continuously for everyone,
+   while large motion (orb drifting, entrance slides) still respects
+   the OS-level reduced-motion preference.
+══════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-btn-primary::after { animation: shimmer 3.5s ease-in-out 1.8s infinite !important; }
+  .hero-card-cta::after  { animation: shimmer 3.5s ease-in-out 2.2s infinite !important; }
+  .hero-card-glow        { animation: glowPulse 4s ease-in-out infinite !important; }
+  .hero-live-dot         { animation: livePulse 2s ease-in-out infinite !important; }
+  .hero-right            { animation: cardFloat 7s ease-in-out infinite !important; }
+  .wa-float              { animation: waFloat 3s ease-in-out infinite !important; }
+  .hero-grid-overlay     { transform: none !important; }
 }
