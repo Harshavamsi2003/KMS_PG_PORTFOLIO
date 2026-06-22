@@ -41,8 +41,8 @@ export default function Rooms() {
           <span className="eyebrow">Accommodation</span>
           <h2 className="sec-title">Choose Your <em>Perfect Room</em></h2>
           <p className="sec-sub">
-            All rooms are fully furnished, AC-equipped and cleaned daily.
-            Food is optional at ₹3,000/month extra — 3 home-cooked South Indian meals daily.
+            Fully furnished, AC-equipped rooms, cleaned every single day —
+            pick the sharing that fits your comfort and your budget.
           </p>
         </div>
 
@@ -114,8 +114,6 @@ export default function Rooms() {
               </div>
 
               <div className="room-body">
-                <h3 className="room-title">{room.label}</h3>
-
                 <div className="room-pricing">
                   <div className="room-price-row">
                     <div className="rpr-left">
@@ -142,33 +140,6 @@ export default function Rooms() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Food banner */}
-        <div className="rooms-food-banner rv">
-          <div className="rfb-left">
-            <span className="rfb-icon">🍽</span>
-            <div>
-              <p className="rfb-title">What&apos;s Included in Food</p>
-              <p className="rfb-sub">3 home-cooked South Indian meals daily — Breakfast, Lunch and Dinner</p>
-            </div>
-          </div>
-          <div className="rfb-meals">
-            <div className="rfb-meal">
-              <span className="rfb-meal-time">7:30 – 9:30 AM</span>
-              <span className="rfb-meal-name">Breakfast</span>
-            </div>
-            <div className="rfb-meal-dot" />
-            <div className="rfb-meal">
-              <span className="rfb-meal-time">12:30 – 2:30 PM</span>
-              <span className="rfb-meal-name">Lunch</span>
-            </div>
-            <div className="rfb-meal-dot" />
-            <div className="rfb-meal">
-              <span className="rfb-meal-time">7:30 – 9:30 PM</span>
-              <span className="rfb-meal-name">Dinner</span>
-            </div>
-          </div>
         </div>
 
       </div>
