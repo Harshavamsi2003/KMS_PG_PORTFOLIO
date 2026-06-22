@@ -14,7 +14,7 @@ const branches = [
     address: 'No1, 39C, 1st Main Rd, Venkateshwara Nagar, Ramapuram, Chennai — 600116',
     chips: ['Near DLF IT Park', 'Near SRM College', '5-Min Walk to DLF'],
     mapLink: 'https://maps.app.goo.gl/kz4hoFfm9RVYNUGc9',
-    photos: Array.from({ length: 10 }, (_, i) => `/src/assets/KMS/MEN/B1/${i + 1}.jpg`),
+    photos: Array.from({ length: 10 }, (_, i) => `/public/KMS/MEN/B1/${i + 1}.jpg`),
     main: true,
   },
   {
@@ -26,7 +26,7 @@ const branches = [
     address: 'Plot No:1, 8B, 8th Cross St, Shanthi Nagar, Venkateswara Nagar, Ramapuram — 600089',
     chips: ['Venkateswara Nagar', 'Near DLF IT Park', 'Easy Transport'],
     mapLink: 'https://maps.app.goo.gl/9u5xCaVQczhW287GA',
-    photos: Array.from({ length: 10 }, (_, i) => `/src/assets/KMS/MEN/B2/${i + 1}.jpg`),
+    photos: Array.from({ length: 10 }, (_, i) => `/public/KMS/MEN/B2/${i + 1}.jpg`),
     main: false,
   },
   {
@@ -38,7 +38,7 @@ const branches = [
     address: 'No:1/42, Naidu St, Suresh Nagar, Ramapuram, Chennai — 600089',
     chips: ['Ramapuram Junction', 'Near Porur', 'Bus Route Access'],
     mapLink: 'https://share.google/z6S58UlX7k3406YTJ',
-    photos: Array.from({ length: 11 }, (_, i) => `/src/assets/KMS/MEN/B3/${i + 1}.jpg`),
+    photos: Array.from({ length: 11 }, (_, i) => `/public/KMS/MEN/B3/${i + 1}.jpg`),
     main: false,
   },
   {
@@ -50,7 +50,7 @@ const branches = [
     address: 'Plot No:1/5, 2nd Cross St, Venkateshwara Nagar, Ramapuram, Chennai — 600089',
     chips: ['Venkateshwara Nagar', 'Near IT Hub', 'Gated Community'],
     mapLink: 'https://maps.app.goo.gl/izXP8RziZR414ekz5',
-    photos: Array.from({ length: 12 }, (_, i) => `/src/assets/KMS/MEN/B4/${i + 1}.jpg`),
+    photos: Array.from({ length: 12 }, (_, i) => `/public/KMS/MEN/B4/${i + 1}.jpg`),
     main: false,
   },
   {
@@ -62,7 +62,7 @@ const branches = [
     address: 'No:3, Kalyani Ponnappan Ave, Kothari Nagar, Ramapuram, Chennai — 600089',
     chips: ['Ladies Only', 'Kothari Nagar', 'Fully Secured'],
     mapLink: 'https://maps.app.goo.gl/2DXYAuydgQvdyoxj8',
-    photos: Array.from({ length: 15 }, (_, i) => `/src/assets/KMS/WOMEN/B1/${i + 1}.jpg`),
+    photos: Array.from({ length: 15 }, (_, i) => `/public/KMS/WOMEN/B1/${i + 1}.jpg`),
     main: false,
     extraNote: '2 additional ladies branches within walking distance.',
   },
