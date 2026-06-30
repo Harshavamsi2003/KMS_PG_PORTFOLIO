@@ -49,6 +49,7 @@
 /* ═══ PHOTO LAYERS — 3-image crossfade slideshow ═══ */
 .hero-photo-stack {
   position: absolute; inset: 0; z-index: 0; overflow: hidden;
+  background: #14171f;
 }
 .hero-photo {
   position: absolute; inset: 0;
@@ -59,6 +60,7 @@
   transform: scale(1.07);
   transition: opacity 1.6s var(--ease);
   will-change: opacity, transform;
+  background: #14171f; /* fallback so letterboxed edges never show white */
 }
 .hero-photo.is-active {
   opacity: 1;
@@ -75,15 +77,15 @@
   position: absolute; inset: 0; z-index: 1;
   background:
     linear-gradient(108deg,
-      rgba(9,11,18,.95)  0%,
-      rgba(9,11,18,.88) 30%,
-      rgba(9,11,18,.60) 52%,
-      rgba(9,11,18,.28) 70%,
-      rgba(9,11,18,.12) 100%
+      rgba(9,11,18,.82)  0%,
+      rgba(9,11,18,.70) 30%,
+      rgba(9,11,18,.44) 52%,
+      rgba(9,11,18,.18) 70%,
+      rgba(9,11,18,.06) 100%
     ),
     linear-gradient(to top,
-      rgba(9,11,18,.82) 0%,
-      rgba(9,11,18,.35) 30%,
+      rgba(9,11,18,.66) 0%,
+      rgba(9,11,18,.22) 30%,
       transparent 55%
     );
 }
@@ -91,8 +93,8 @@
 .hero-vignette {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   background:
-    radial-gradient(ellipse 85% 80% at 0% 100%, rgba(9,11,18,.45) 0%, transparent 58%),
-    radial-gradient(ellipse 50% 55% at 100% 0%,  rgba(9,11,18,.18) 0%, transparent 52%);
+    radial-gradient(ellipse 85% 80% at 0% 100%, rgba(9,11,18,.32) 0%, transparent 58%),
+    radial-gradient(ellipse 50% 55% at 100% 0%,  rgba(9,11,18,.12) 0%, transparent 52%);
 }
 
 /* Gold+blue topline */
@@ -146,31 +148,54 @@
 }
 .hero--in .hero-h1 { animation: kUp .92s var(--ease) .19s both; }
 
+.hero-h1-brand {
+  display: block;
+  position: relative;
+  font-family: var(--font-display);
+  font-size: clamp(3.1rem, 6.2vw, 5.4rem); font-weight: 800; letter-spacing: 2px;
+  line-height: 1; text-transform: uppercase;
+  background: linear-gradient(120deg, var(--gold-lt) 0%, var(--gold) 45%, #fff3d6 58%, var(--gold) 72%, var(--gold-lt) 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+  text-shadow: none;
+  animation: kBrandShine 5s linear .9s infinite;
+}
+.hero-h1-sub {
+  display: block;
+  white-space: nowrap;
+}
 .hero-h1-plain {
   font-family: var(--font-display);
-  font-size: clamp(2.9rem, 5.2vw, 4.6rem);
-  font-weight: 700; line-height: 1.03; letter-spacing: -1.8px;
-  color: #fff;
-  text-shadow: 0 3px 28px rgba(9,11,18,.40);
-  display: block;
+  font-size: clamp(1.7rem, 3vw, 2.55rem);
+  font-weight: 600; line-height: 1.15; letter-spacing: -.6px;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 3px 22px rgba(0,0,0,.6), 0 1px 3px rgba(0,0,0,.7);
+  display: inline-block;
 }
 .hero-h1-gold {
   font-family: var(--font-display);
-  font-size: clamp(2.9rem, 5.2vw, 4.6rem);
-  font-weight: 600; font-style: italic; line-height: 1.03; letter-spacing: -1.8px;
-  display: block;
+  font-size: clamp(1.7rem, 3vw, 2.55rem);
+  font-weight: 500; font-style: italic; line-height: 1.15; letter-spacing: -.6px;
+  display: inline-block;
   background: linear-gradient(120deg, var(--gold) 0%, var(--gold-lt) 48%, var(--gold) 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+@keyframes kBrandShine {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: -220% 50%; }
 }
 
 /* ── Description ── */
 .hero-desc {
   font-family: var(--font-body);
   font-size: clamp(.9rem, 1.2vw, 1rem);
-  font-weight: 300; line-height: 1.80; color: rgba(255,255,255,.68);
+  font-weight: 300; line-height: 1.80; color: rgba(255,255,255,.86);
   max-width: 480px; margin-bottom: 32px;
-  text-shadow: 0 1px 8px rgba(9,11,18,.55);
+  text-shadow: 0 2px 14px rgba(0,0,0,.65);
   opacity: 0;
 }
 .hero--in .hero-desc { animation: kUp .78s var(--ease) .28s both; }
@@ -183,36 +208,36 @@
 }
 .hero--in .hero-btns { animation: kUp .72s var(--ease) .36s both; }
 
-/* Gold button — soft ambient glow pulse at rest, sheen sweep on hover only */
+/* Gold button — calm at rest, refined lift + shine sweep on hover */
 .hero-btn-gold {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 15px 30px;
   background: var(--grad-gold); color: #241902;
   font-family: var(--font-body); font-size: 14px; font-weight: 700;
   border-radius: 9999px; text-decoration: none; letter-spacing: .3px;
-  box-shadow: 0 12px 34px rgba(204,157,68,.40), inset 0 1px 0 rgba(255,255,255,.28);
-  transition: transform .42s var(--ease), box-shadow .42s var(--ease), gap .3s var(--ease);
+  box-shadow: 0 10px 26px rgba(204,157,68,.34), inset 0 1px 0 rgba(255,255,255,.28);
+  transition: transform .45s cubic-bezier(.22,1,.36,1),
+              box-shadow .45s cubic-bezier(.22,1,.36,1),
+              gap .3s var(--ease);
   position: relative; overflow: hidden; white-space: nowrap;
-  animation: kBtnGlow 3.6s ease-in-out infinite;
 }
-/* Sheen — only sweeps on hover, once */
+/* Sheen — sweeps once on hover, never loops at rest */
 .hero-btn-gold::before {
   content: '';
   position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
-  background: linear-gradient(115deg, transparent, rgba(255,255,255,.55), transparent);
+  background: linear-gradient(115deg, transparent, rgba(255,255,255,.65), transparent);
   transform: skewX(-18deg);
-  transition: left .85s cubic-bezier(.2,.8,.2,1);
+  transition: left .75s cubic-bezier(.2,.8,.2,1);
   pointer-events: none;
 }
 .hero-btn-gold:hover::before { left: 140%; }
 .hero-btn-gold svg { transition: transform .35s var(--ease); }
 .hero-btn-gold:hover {
-  transform: translateY(-3px); gap: 13px;
-  box-shadow: 0 22px 50px rgba(204,157,68,.56), inset 0 1px 0 rgba(255,255,255,.34);
-  animation-play-state: paused;
+  transform: translateY(-4px) scale(1.015); gap: 13px;
+  box-shadow: 0 24px 54px rgba(204,157,68,.50), inset 0 1px 0 rgba(255,255,255,.36);
 }
 .hero-btn-gold:hover svg { transform: translateX(4px); }
-.hero-btn-gold:active { transform: translateY(-1px) scale(.97); }
+.hero-btn-gold:active { transform: translateY(-1px) scale(.97); transition-duration: .15s; }
 
 /* Ghost button */
 .hero-btn-ghost {
@@ -237,13 +262,13 @@
    blurred, background photo visible through it.
 ══════════════════════════════════════ */
 .hero-card {
-  background: linear-gradient(162deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 100%);
-  border: 1px solid rgba(255,255,255,.22);
+  background: linear-gradient(162deg, rgba(20,16,8,.40) 0%, rgba(20,16,8,.22) 100%);
+  border: 1px solid rgba(255,255,255,.26);
   border-radius: 26px;
   padding: 28px 26px 24px;
   position: relative; overflow: hidden;
-  backdrop-filter: blur(22px) saturate(140%);
-  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
   box-shadow:
     0 36px 88px rgba(0,0,0,.42),
     0 1px 0 rgba(255,255,255,.30) inset,
@@ -280,7 +305,9 @@
 .hc-head {
   display: flex; align-items: center; justify-content: space-between;
   gap: 10px; margin-bottom: 22px; position: relative; z-index: 1;
+  opacity: 0;
 }
+.hero--in .hc-head { animation: kUp .6s var(--ease) .36s both; }
 .hc-eyebrow {
   font-family: var(--font-body); font-size: 9.5px; font-weight: 700;
   letter-spacing: 1.8px; text-transform: uppercase; color: rgba(255,255,255,.62);
@@ -294,13 +321,19 @@
 .hc-stat {
   display: flex; flex-direction: column; gap: 4px;
   opacity: 0;
+  transition: transform .3s var(--ease);
 }
 .hero--in .hc-stat { animation: kStat .60s var(--ease) var(--d) both; }
+.hc-stat:hover { transform: translateY(-3px); }
+.hc-stat:hover .hc-num { transform: scale(1.06); }
 
 .hc-num {
   font-family: var(--font-display);
   font-size: 1.65rem; font-weight: 700; color: #fff; line-height: 1; letter-spacing: -.4px;
   text-shadow: 0 2px 14px rgba(0,0,0,.35);
+  display: inline-block;
+  transition: transform .3s var(--ease);
+  transform-origin: left center;
 }
 .hc-sup { font-size: .60em; color: var(--gold-lt); vertical-align: super; letter-spacing: 0; }
 .hc-lbl {
@@ -313,7 +346,10 @@
   position: relative; height: 0;
   margin: 6px -26px 20px;
   border-top: 2px dashed rgba(255,255,255,.22);
+  transform: scaleX(0); transform-origin: left center;
+  opacity: 0;
 }
+.hero--in .hc-perf { animation: kPerf .55s var(--ease) .82s both; }
 .hc-perf::before, .hc-perf::after {
   content: ''; position: absolute; top: -7px;
   width: 13px; height: 13px; border-radius: 50%;
@@ -323,11 +359,18 @@
 .hc-perf::before { left: -7px; }
 .hc-perf::after  { right: -7px; }
 
+@keyframes kPerf {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
 /* Price row */
 .hc-price-row {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 16px; position: relative; z-index: 1;
+  opacity: 0;
 }
+.hero--in .hc-price-row { animation: kUp .6s var(--ease) .92s both; }
 .hc-from {
   font-family: var(--font-body); font-size: 10px; font-weight: 700;
   letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.58);
@@ -339,7 +382,7 @@
 }
 .hc-price em { font-style: normal; font-size: .47em; font-weight: 400; color: rgba(255,255,255,.58); }
 
-/* Card CTA — gold pill on glass, hover-triggered sheen + resting glow breathe */
+/* Card CTA — gold pill on glass, refined lift + sheen on hover only */
 .hc-cta {
   display: flex; align-items: center; justify-content: center;
   width: 100%; padding: 15px;
@@ -347,26 +390,24 @@
   color: #241902;
   font-family: var(--font-body); font-size: 14px; font-weight: 700;
   border-radius: 9999px; text-decoration: none; letter-spacing: .4px;
-  box-shadow: 0 10px 28px rgba(204,157,68,.36);
-  transition: transform .32s var(--ease), box-shadow .32s var(--ease);
+  box-shadow: 0 8px 22px rgba(204,157,68,.32);
+  transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s cubic-bezier(.22,1,.36,1);
   position: relative; overflow: hidden; z-index: 1;
-  animation: kBtnGlow 3.6s ease-in-out .6s infinite;
 }
 .hc-cta::before {
   content: '';
   position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
-  background: linear-gradient(115deg, transparent, rgba(255,255,255,.55), transparent);
+  background: linear-gradient(115deg, transparent, rgba(255,255,255,.65), transparent);
   transform: skewX(-18deg);
-  transition: left .85s cubic-bezier(.2,.8,.2,1);
+  transition: left .75s cubic-bezier(.2,.8,.2,1);
   pointer-events: none;
 }
 .hc-cta:hover::before { left: 140%; }
 .hc-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 42px rgba(204,157,68,.54);
-  animation-play-state: paused;
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 18px 40px rgba(204,157,68,.48);
 }
-.hc-cta:active { transform: scale(.98); }
+.hc-cta:active { transform: scale(.97); transition-duration: .15s; }
 
 /* ═══ SCROLL INDICATOR — centred bottom ═══ */
 .hero-scroll {
@@ -432,17 +473,21 @@
     animation: kUp .9s var(--ease) .34s both !important;
   }
   .hero-desc { max-width: 100%; }
+
+  /* Dedicated portrait photo set is used here (homeph1–3) — recentre slightly higher */
+  .hero-photo { object-position: 50% 22%; }
 }
 
 /* 640 — phone */
 @media (max-width: 640px) {
-  .hero-inner { padding: 120px 20px 96px; gap: 28px; }
+  .hero-inner { padding: 118px 20px 88px; gap: 26px; }
 
-  /* Full photo visible on tall narrow screens — recentre crop */
-  .hero-photo { object-position: 50% 38%; }
+  /* Dedicated portrait photo (homeph1–3) — show the framed shot, not the ceiling */
+  .hero-photo { object-position: 50% 24%; }
 
   .hero-h1-plain,
-  .hero-h1-gold  { font-size: clamp(2.4rem, 9.5vw, 3rem); letter-spacing: -1.2px; }
+  .hero-h1-gold  { font-size: clamp(1.25rem, 4.6vw, 1.6rem); letter-spacing: -.4px; }
+  .hero-h1-brand { font-size: clamp(2.5rem, 11vw, 3.4rem); letter-spacing: 1px; margin-bottom: 10px; }
   .hero-desc     { font-size: .88rem; margin-bottom: 24px; }
 
   .hero-btns { flex-direction: row; flex-wrap: wrap; gap: 10px; }
@@ -461,8 +506,9 @@
 
 /* Small phone */
 @media (max-width: 380px) {
-  .hero-inner { padding: 110px 16px 90px; }
-  .hero-h1-plain, .hero-h1-gold { font-size: 2.15rem; }
+  .hero-inner { padding: 108px 16px 80px; }
+  .hero-h1-plain, .hero-h1-gold { font-size: 1.15rem; }
+  .hero-h1-brand { font-size: 2.2rem; letter-spacing: .5px; }
   .hc-num   { font-size: 1.3rem; }
   .hc-price { font-size: 1.55rem; }
 }
@@ -472,7 +518,8 @@
   .hero { min-height: auto; }
   .hero-inner { padding: 90px 28px 56px; grid-template-columns: 1fr 300px; gap: 32px; }
   .hero-card  { animation: kRight .96s var(--ease) .30s both, kFloat 7.5s ease-in-out 1.8s infinite !important; }
-  .hero-h1-plain, .hero-h1-gold { font-size: 2rem; }
+  .hero-h1-plain, .hero-h1-gold { font-size: 1.15rem; }
+  .hero-h1-brand { font-size: 2rem; }
   .hero-scroll { display: none; }
 }
 
@@ -483,6 +530,8 @@
   .wa-float,
   .hero-scroll-bar,
   .hero-btn-gold,
+  .hero-h1-brand,
   .hc-cta { animation: none !important; }
+  .hc-stat:hover, .hc-stat:hover .hc-num { transform: none !important; }
   .hero-photo { transform: none !important; transition: opacity .6s ease !important; }
 }
