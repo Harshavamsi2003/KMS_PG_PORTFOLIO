@@ -84,6 +84,30 @@ img { max-width: 100%; display: block; }
 button { font-family: var(--font-body); }
 ::selection { background: rgba(59,108,244,0.18); color: var(--ink); }
 
+/* Keep anchor-jump sections (Rooms, Facilities, Branches, etc.) clear
+   of the fixed navbar instead of landing flush/overlapped under it */
+section[id] { scroll-margin-top: 88px; }
+
+/* Premium thin scrollbar (Chrome/Edge/Safari) — falls back silently
+   to default on browsers that don't support it, never breaks layout */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--warm-300), var(--warm-400));
+  border-radius: 9999px; border: 3px solid var(--cream);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+html { scrollbar-width: thin; scrollbar-color: var(--warm-300) var(--cream); }
+
+/* Visible, on-brand keyboard focus ring — accessibility + polish,
+   only shows for keyboard users (not on mouse click) */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 .container {
   max-width: 1180px;
   margin: 0 auto;
@@ -237,9 +261,9 @@ button { font-family: var(--font-body); }
 }
 
 /* ── Scroll Reveal ── */
-.rv  { opacity: 0; transform: translateY(26px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
-.rvl { opacity: 0; transform: translateX(-26px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
-.rvr { opacity: 0; transform: translateX(26px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+.rv  { opacity: 0; transform: translateY(26px) scale(0.985); transition: opacity 0.85s var(--ease), transform 0.85s var(--ease); }
+.rvl { opacity: 0; transform: translateX(-26px) scale(0.985); transition: opacity 0.85s var(--ease), transform 0.85s var(--ease); }
+.rvr { opacity: 0; transform: translateX(26px) scale(0.985); transition: opacity 0.85s var(--ease), transform 0.85s var(--ease); }
 .rv.vis, .rvl.vis, .rvr.vis { opacity: 1; transform: none; }
 
 section { position: relative; }
@@ -252,6 +276,14 @@ section { position: relative; }
 @keyframes foilSheen {
   0%   { transform: translateX(-120%) skewX(-20deg); }
   100% { transform: translateX(260%) skewX(-20deg); }
+}
+
+/* Slow ambient light drift — used on the thin gradient top-divider
+   lines (.rooms::before, .facilities::before, .menu::before, etc.)
+   so they feel alive instead of static, without altering layout */
+@keyframes toplineDrift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
 }
 
 /* Fine paper-grain — pure CSS, no images, adds tactile premium texture */
