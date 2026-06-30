@@ -10,6 +10,8 @@
 .contact::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, transparent, rgba(59,108,244,0.24), transparent);
+  background-size: 200% 100%;
+  animation: toplineDrift 8s ease-in-out infinite;
 }
 .contact::after {
   content: ''; position: absolute; top: -80px; right: -100px;
