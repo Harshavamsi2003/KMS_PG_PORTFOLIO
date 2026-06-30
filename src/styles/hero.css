@@ -11,18 +11,15 @@
 @keyframes kRight { from { opacity:0; transform:translateX(40px) scale(.96) } to { opacity:1; transform:none } }
 @keyframes kBurns { from { transform:scale(1.07) } to { transform:scale(1.0) } }
 
-/* Live dot */
-@keyframes kDot   { 0%,100%{ transform:scale(1);   opacity:1  } 50%{ transform:scale(2.4); opacity:0 } }
-@keyframes kRing  { 0%     { transform:translate(-50%,-50%) scale(.5); opacity:.8 }
-                    100%   { transform:translate(-50%,-50%) scale(2.8); opacity:0 } }
+/* Ambient resting glow-breathe for primary CTAs */
+@keyframes kBtnGlow {
+  0%,100% { box-shadow: 0 12px 34px rgba(204,157,68,.40), inset 0 1px 0 rgba(255,255,255,.28); }
+  50%     { box-shadow: 0 14px 42px rgba(204,157,68,.58), inset 0 1px 0 rgba(255,255,255,.34); }
+}
 
-/* Continuous shimmer — runs forever on both buttons */
-@keyframes kShimmer { 0%{ transform:translateX(-160%) skewX(-18deg) }
-                     100%{ transform:translateX(340%) skewX(-18deg) } }
-
-/* Card float */
-@keyframes kFloat { 0%,100%{ transform:translateY(0)   rotate(-.8deg) }
-                    50%    { transform:translateY(-10px) rotate( .7deg) } }
+/* Card float — gentle vertical drift, no wobble (premium, not gimmicky) */
+@keyframes kFloat { 0%,100%{ transform:translateY(0) }
+                    50%    { transform:translateY(-9px) } }
 
 /* Glow beat */
 @keyframes kGlow  { 0%,100%{ opacity:.22 } 50%{ opacity:.54 } }
@@ -40,10 +37,6 @@
 @keyframes kStat  { from{ opacity:0; transform:translateY(12px) scale(.93) }
                     to  { opacity:1; transform:none } }
 
-/* Badge border pulse */
-@keyframes kBorder{ 0%,100%{ box-shadow:0 0 0 0 rgba(74,222,128,.32) }
-                    50%    { box-shadow:0 0 0 6px rgba(74,222,128,0)   } }
-
 /* ═══ SECTION SHELL ═══ */
 .hero {
   position: relative;
@@ -53,15 +46,28 @@
   align-items: center;
 }
 
-/* ═══ PHOTO LAYERS ═══ */
-.hero-photo {
-  position: absolute; inset: 0; z-index: 0;
-  background: url('/home.png') center 30% / cover no-repeat;
-  transform: scale(1.07);
-  will-change: transform;
+/* ═══ PHOTO LAYERS — 3-image crossfade slideshow ═══ */
+.hero-photo-stack {
+  position: absolute; inset: 0; z-index: 0; overflow: hidden;
 }
-.hero--in .hero-photo {
-  animation: kBurns 9s cubic-bezier(.22,1,.36,1) forwards;
+.hero-photo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 50% 32%;   /* shows full room context, not cropped */
+  opacity: 0;
+  transform: scale(1.07);
+  transition: opacity 1.6s var(--ease);
+  will-change: opacity, transform;
+}
+.hero-photo.is-active {
+  opacity: 1;
+  z-index: 1;
+  animation: kBurnsLoop 7s ease-out forwards;
+}
+@keyframes kBurnsLoop {
+  from { transform: scale(1.07); }
+  to   { transform: scale(1.0); }
 }
 
 /* Dark gradient — heaviest left+bottom, fades right so room is visible */
@@ -119,36 +125,7 @@
 ═══════════════════════ */
 .hero-left { display: flex; flex-direction: column; }
 
-/* ── Live badge ── */
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 8px 18px 8px 14px;
-  background: rgba(30,122,76,.16);
-  border: 1px solid rgba(74,222,128,.32);
-  border-radius: 9999px;
-  width: fit-content; margin-bottom: 18px;
-  position: relative; overflow: visible;
-  font-family: var(--font-body);
-  font-size: 12px; font-weight: 700; letter-spacing: .5px;
-  color: #4ade80;
-  opacity: 0;
-}
-.hero--in .hero-badge {
-  animation: kUp .7s var(--ease) .05s both, kBorder 2.8s ease-in-out 1.4s infinite;
-}
-.hero-badge-ring {
-  position: absolute; left: 13px; top: 50%;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: rgba(74,222,128,.18);
-  animation: kRing 2.4s ease-out 1.6s infinite;
-  pointer-events: none;
-}
-.hero-badge-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #4ade80; flex-shrink: 0; position: relative; z-index: 1;
-  box-shadow: 0 0 8px rgba(74,222,128,.72);
-  animation: kDot 2.4s ease-in-out infinite;
-}
+/* (live badge removed per client request) */
 
 /* ── Eyebrow ── */
 .hero-eyebrow {
@@ -206,30 +183,36 @@
 }
 .hero--in .hero-btns { animation: kUp .72s var(--ease) .36s both; }
 
-/* Gold button — shimmer always running */
+/* Gold button — soft ambient glow pulse at rest, sheen sweep on hover only */
 .hero-btn-gold {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 15px 30px;
   background: var(--grad-gold); color: #241902;
   font-family: var(--font-body); font-size: 14px; font-weight: 700;
   border-radius: 9999px; text-decoration: none; letter-spacing: .3px;
-  box-shadow: 0 12px 34px rgba(204,157,68,.44), inset 0 1px 0 rgba(255,255,255,.28);
-  transition: transform .30s var(--ease), box-shadow .30s, gap .25s;
+  box-shadow: 0 12px 34px rgba(204,157,68,.40), inset 0 1px 0 rgba(255,255,255,.28);
+  transition: transform .42s var(--ease), box-shadow .42s var(--ease), gap .3s var(--ease);
   position: relative; overflow: hidden; white-space: nowrap;
+  animation: kBtnGlow 3.6s ease-in-out infinite;
 }
-/* ::before shimmer — always running */
+/* Sheen — only sweeps on hover, once */
 .hero-btn-gold::before {
   content: '';
-  position: absolute; top: 0; left: 0; width: 45%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.30), transparent);
-  animation: kShimmer 2.8s ease-in-out 0s infinite;
+  position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: skewX(-18deg);
+  transition: left .85s cubic-bezier(.2,.8,.2,1);
   pointer-events: none;
 }
+.hero-btn-gold:hover::before { left: 140%; }
+.hero-btn-gold svg { transition: transform .35s var(--ease); }
 .hero-btn-gold:hover {
   transform: translateY(-3px); gap: 13px;
-  box-shadow: 0 20px 48px rgba(204,157,68,.54), inset 0 1px 0 rgba(255,255,255,.32);
+  box-shadow: 0 22px 50px rgba(204,157,68,.56), inset 0 1px 0 rgba(255,255,255,.34);
+  animation-play-state: paused;
 }
-.hero-btn-gold:active { transform: translateY(-1px) scale(.98); }
+.hero-btn-gold:hover svg { transform: translateX(4px); }
+.hero-btn-gold:active { transform: translateY(-1px) scale(.97); }
 
 /* Ghost button */
 .hero-btn-ghost {
@@ -250,21 +233,22 @@
 
 /* ══════════════════════════════════════
    RIGHT — RESIDENT ACCESS CARD
-   Cream/warm paper — SAME design on
-   desktop (right column) and mobile (below).
-   No glass, no dark — matches the liked screenshot.
+   Premium frosted-glass look — transparent,
+   blurred, background photo visible through it.
 ══════════════════════════════════════ */
 .hero-card {
-  background: linear-gradient(162deg, #fefcf7 0%, #f2e9d6 100%);
+  background: linear-gradient(162deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.05) 100%);
+  border: 1px solid rgba(255,255,255,.22);
   border-radius: 26px;
   padding: 28px 26px 24px;
   position: relative; overflow: hidden;
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
   box-shadow:
-    0 36px 88px rgba(0,0,0,.52),
-    0 1px 0 rgba(255,255,255,.62) inset,
-    0 0 0 1px rgba(255,255,255,.16);
+    0 36px 88px rgba(0,0,0,.42),
+    0 1px 0 rgba(255,255,255,.30) inset,
+    0 0 0 1px rgba(255,255,255,.08);
   opacity: 0;
-  /* Small tilt on desktop */
   transform-origin: center;
 }
 .hero--in .hero-card {
@@ -272,28 +256,15 @@
 }
 .hero-card:hover {
   transform: rotate(0deg) translateY(-8px) !important;
-  box-shadow: 0 52px 110px rgba(0,0,0,.60), 0 1px 0 rgba(255,255,255,.62) inset;
+  box-shadow: 0 52px 110px rgba(0,0,0,.50), 0 1px 0 rgba(255,255,255,.30) inset;
   transition: transform .44s var(--ease), box-shadow .44s;
 }
 
-/* Gold foil corner */
-.hc-foil {
-  position: absolute; top: 0; right: 0;
-  width: 100px; height: 100px;
-  background: var(--grad-gold);
-  border-radius: 0 26px 0 100%;
-  opacity: .88;
-  pointer-events: none;
-}
-/* Paper grain */
+/* Subtle glass sheen */
 .hero-card::after {
   content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
-  background-image:
-    radial-gradient(rgba(36,31,22,.055) .5px, transparent .5px),
-    radial-gradient(rgba(255,255,255,.28) .5px, transparent .5px);
-  background-size: 3px 3px, 5px 5px;
-  background-position: 0 0, 1.5px 1.5px;
-  opacity: .55; mix-blend-mode: overlay;
+  background: linear-gradient(140deg, rgba(255,255,255,.16) 0%, transparent 40%);
+  mix-blend-mode: overlay;
 }
 
 /* Ambient gold glow */
@@ -312,20 +283,7 @@
 }
 .hc-eyebrow {
   font-family: var(--font-body); font-size: 9.5px; font-weight: 700;
-  letter-spacing: 1.8px; text-transform: uppercase; color: var(--warm-400);
-}
-/* Green available pill on card */
-.hc-avail {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 12px;
-  background: rgba(30,122,76,.10); border: 1px solid rgba(30,122,76,.30);
-  border-radius: 9999px; flex-shrink: 0;
-  font-family: var(--font-body); font-size: 10.5px; font-weight: 700;
-  color: #1a6b42; letter-spacing: .3px;
-}
-.hc-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: #1a6b42; flex-shrink: 0;
-  animation: kDot 2.4s ease-in-out .5s infinite;
+  letter-spacing: 1.8px; text-transform: uppercase; color: rgba(255,255,255,.62);
 }
 
 /* Stats 2×2 grid */
@@ -341,25 +299,26 @@
 
 .hc-num {
   font-family: var(--font-display);
-  font-size: 1.65rem; font-weight: 700; color: #1e1a12; line-height: 1; letter-spacing: -.4px;
+  font-size: 1.65rem; font-weight: 700; color: #fff; line-height: 1; letter-spacing: -.4px;
+  text-shadow: 0 2px 14px rgba(0,0,0,.35);
 }
-.hc-sup { font-size: .60em; color: var(--gold-dp); vertical-align: super; letter-spacing: 0; }
+.hc-sup { font-size: .60em; color: var(--gold-lt); vertical-align: super; letter-spacing: 0; }
 .hc-lbl {
   font-family: var(--font-body); font-size: 9px; font-weight: 600;
-  color: var(--warm-400); letter-spacing: .9px; text-transform: uppercase;
+  color: rgba(255,255,255,.58); letter-spacing: .9px; text-transform: uppercase;
 }
 
 /* Perforated divider — ticket stub motif */
 .hc-perf {
   position: relative; height: 0;
   margin: 6px -26px 20px;
-  border-top: 2px dashed rgba(36,31,22,.14);
+  border-top: 2px dashed rgba(255,255,255,.22);
 }
 .hc-perf::before, .hc-perf::after {
   content: ''; position: absolute; top: -7px;
   width: 13px; height: 13px; border-radius: 50%;
-  background: linear-gradient(162deg, #fefcf7 0%, #f2e9d6 100%);
-  border: 2px dashed rgba(36,31,22,.14);
+  background: transparent;
+  border: 2px dashed rgba(255,255,255,.22);
 }
 .hc-perf::before { left: -7px; }
 .hc-perf::after  { right: -7px; }
@@ -371,37 +330,41 @@
 }
 .hc-from {
   font-family: var(--font-body); font-size: 10px; font-weight: 700;
-  letter-spacing: 1.2px; text-transform: uppercase; color: var(--warm-400);
+  letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.58);
 }
 .hc-price {
   font-family: var(--font-display);
-  font-size: 1.90rem; font-weight: 700; color: #1e1a12; line-height: 1; letter-spacing: -.4px;
+  font-size: 1.90rem; font-weight: 700; color: #fff; line-height: 1; letter-spacing: -.4px;
+  text-shadow: 0 2px 14px rgba(0,0,0,.35);
 }
-.hc-price em { font-style: normal; font-size: .47em; font-weight: 400; color: var(--warm-400); }
+.hc-price em { font-style: normal; font-size: .47em; font-weight: 400; color: rgba(255,255,255,.58); }
 
-/* Card CTA — dark pill, shimmer always running */
+/* Card CTA — gold pill on glass, hover-triggered sheen + resting glow breathe */
 .hc-cta {
   display: flex; align-items: center; justify-content: center;
   width: 100%; padding: 15px;
-  background: linear-gradient(115deg, #17130e 0%, #2c2418 100%);
-  color: #fff;
+  background: var(--grad-gold);
+  color: #241902;
   font-family: var(--font-body); font-size: 14px; font-weight: 700;
   border-radius: 9999px; text-decoration: none; letter-spacing: .4px;
-  box-shadow: 0 10px 28px rgba(0,0,0,.30);
-  transition: transform .28s var(--ease), box-shadow .28s, background .28s;
+  box-shadow: 0 10px 28px rgba(204,157,68,.36);
+  transition: transform .32s var(--ease), box-shadow .32s var(--ease);
   position: relative; overflow: hidden; z-index: 1;
+  animation: kBtnGlow 3.6s ease-in-out .6s infinite;
 }
 .hc-cta::before {
   content: '';
-  position: absolute; top: 0; left: 0; width: 45%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
-  animation: kShimmer 2.8s ease-in-out .4s infinite;
+  position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: skewX(-18deg);
+  transition: left .85s cubic-bezier(.2,.8,.2,1);
   pointer-events: none;
 }
+.hc-cta:hover::before { left: 140%; }
 .hc-cta:hover {
   transform: translateY(-2px);
-  background: linear-gradient(115deg, var(--blue-deep) 0%, var(--blue) 100%);
-  box-shadow: 0 16px 38px rgba(37,70,176,.44);
+  box-shadow: 0 18px 42px rgba(204,157,68,.54);
+  animation-play-state: paused;
 }
 .hc-cta:active { transform: scale(.98); }
 
@@ -475,6 +438,9 @@
 @media (max-width: 640px) {
   .hero-inner { padding: 120px 20px 96px; gap: 28px; }
 
+  /* Full photo visible on tall narrow screens — recentre crop */
+  .hero-photo { object-position: 50% 38%; }
+
   .hero-h1-plain,
   .hero-h1-gold  { font-size: clamp(2.4rem, 9.5vw, 3rem); letter-spacing: -1.2px; }
   .hero-desc     { font-size: .88rem; margin-bottom: 24px; }
@@ -484,7 +450,6 @@
   .hero-btn-ghost { flex: 1 1 auto; justify-content: center; padding: 14px 18px; font-size: 13px; }
 
   .hero-card { padding: 22px 20px 20px; border-radius: 22px; }
-  .hc-foil   { width: 80px; height: 80px; border-radius: 0 22px 0 100%; }
   .hc-perf   { margin: 4px -20px 16px; }
   .hc-num    { font-size: 1.45rem; }
   .hc-price  { font-size: 1.70rem; }
@@ -516,11 +481,8 @@
   .hero-photo,
   .hc-glow,
   .wa-float,
-  .hero-badge-dot, .hero-badge-ring,
-  .hc-dot,
-  .hero-scroll-bar { animation: none !important; }
-  .hero-photo { transform: none !important; }
-  /* Keep entrance animations — just remove infinite loops */
-  .hero-btn-gold::before,
-  .hc-cta::before { animation-iteration-count: 0 !important; }
+  .hero-scroll-bar,
+  .hero-btn-gold,
+  .hc-cta { animation: none !important; }
+  .hero-photo { transform: none !important; transition: opacity .6s ease !important; }
 }
