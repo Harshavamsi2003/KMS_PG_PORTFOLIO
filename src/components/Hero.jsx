@@ -7,20 +7,33 @@ const WA_MSG = encodeURIComponent("Hi KMS PG! I'm interested in a room. Please s
 const stats = [
   { val: '4.8', unit: '★', lbl: 'Google Rating' },
   { val: '354', unit: '+', lbl: 'Reviews'        },
-  { val: '5',   unit: '',  lbl: 'Branches'       },
+  { val: '7',   unit: '',  lbl: 'Branches'       },
   { val: '10',  unit: '+', lbl: 'Years Trust'    },
 ]
 
-const TARGETS = [48, 354, 5, 10]
+const TARGETS = [48, 354, 7, 10]
+
+/* Rotating hero backgrounds */
+const SLIDES = ['/home1.png', '/home2.png', '/home3.png']
+const SLIDE_MS = 5500
 
 export default function Hero() {
   const [ready,  setReady]  = useState(false)
   const [counts, setCounts] = useState([0, 0, 0, 0])
+  const [slide,  setSlide]  = useState(0)
   const rafRef = useRef(null)
 
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 60)
     return () => clearTimeout(t)
+  }, [])
+
+  /* Cross-fade through the 3 background photos */
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSlide(s => (s + 1) % SLIDES.length)
+    }, SLIDE_MS)
+    return () => clearInterval(id)
   }, [])
 
   useEffect(() => {
@@ -44,8 +57,19 @@ export default function Hero() {
   return (
     <section className={`hero${ready ? ' hero--in' : ''}`} id="home">
 
-      {/* ── Background layers ── */}
-      <div className="hero-photo"    aria-hidden="true" />
+      {/* ── Background layers — 3-image crossfade ── */}
+      <div className="hero-photo-stack" aria-hidden="true">
+        {SLIDES.map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            alt=""
+            className={`hero-photo${i === slide ? ' is-active' : ''}`}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            draggable="false"
+          />
+        ))}
+      </div>
       <div className="hero-grad"     aria-hidden="true" />
       <div className="hero-vignette" aria-hidden="true" />
       <div className="hero-topline"  aria-hidden="true" />
@@ -55,13 +79,6 @@ export default function Hero() {
 
         {/* ════ LEFT / TOP — editorial text ════ */}
         <div className="hero-left">
-
-          {/* Live badge */}
-          <div className="hero-badge">
-            <span className="hero-badge-ring" aria-hidden="true" />
-            <span className="hero-badge-dot"  aria-hidden="true" />
-            <span>Rooms Available Now</span>
-          </div>
 
           {/* Eyebrow location */}
           <p className="hero-eyebrow">
@@ -76,41 +93,32 @@ export default function Hero() {
 
           {/* Description */}
           <p className="hero-desc">
-            Five well-kept residences near DLF IT Park, built around one idea —{' '}
+            Seven well-kept residences near DLF IT Park, built around one idea —{' '}
             <strong>every resident is family.</strong> Clean rooms, warm
             home-cooked meals, real care.
           </p>
 
-          {/* CTAs */}
+          {/* CTA */}
           <div className="hero-btns">
-            <a href="#contact" className="hero-btn-gold">
-              Book a Visit
+            <a href="#rooms" className="hero-btn-gold">
+              View Rooms &amp; Pricing
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
-            <a href="#rooms" className="hero-btn-ghost">View Rooms &amp; Pricing</a>
           </div>
         </div>
 
-        {/* ════ RIGHT / BOTTOM — Resident Access Card ════ */}
-        {/* Same design on ALL screen sizes, two-column desktop, stacked mobile */}
+        {/* ════ RIGHT / BOTTOM — Resident Access Card (glass) ════ */}
         <aside className="hero-card" aria-label="Resident Access Card">
 
-          {/* Gold foil + glow decoration */}
-          <div className="hc-foil"  aria-hidden="true" />
+          {/* Ambient glow decoration */}
           <div className="hc-glow"  aria-hidden="true" />
 
           {/* Card header */}
           <div className="hc-head">
-            <div className="hc-head-left">
-              <span className="hc-eyebrow">Resident Access Card</span>
-            </div>
-            <div className="hc-avail">
-              <span className="hc-dot" aria-hidden="true" />
-              Rooms Available
-            </div>
+            <span className="hc-eyebrow">Resident Access Card</span>
           </div>
 
           {/* Stats 2×2 */}
