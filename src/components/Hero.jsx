@@ -13,15 +13,32 @@ const stats = [
 
 const TARGETS = [48, 354, 7, 10]
 
-/* Rotating hero backgrounds */
-const SLIDES = ['/home1.png', '/home2.png', '/home3.png']
+/* Rotating hero backgrounds — landscape for desktop/tablet, portrait for phones */
+const SLIDES_DESKTOP = ['/home1.png', '/home2.png', '/home3.png']
+const SLIDES_MOBILE  = ['/homeph1.png', '/homeph2.png', '/homeph3.png']
 const SLIDE_MS = 5500
+const MOBILE_QUERY = '(max-width: 960px)'
 
 export default function Hero() {
   const [ready,  setReady]  = useState(false)
   const [counts, setCounts] = useState([0, 0, 0, 0])
   const [slide,  setSlide]  = useState(0)
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(MOBILE_QUERY).matches
+  )
   const rafRef = useRef(null)
+
+  /* Track viewport so we swap to the dedicated portrait photo set on phones/tablets */
+  useEffect(() => {
+    const mql = window.matchMedia(MOBILE_QUERY)
+    const onChange = (e) => setIsMobile(e.matches)
+    mql.addEventListener ? mql.addEventListener('change', onChange) : mql.addListener(onChange)
+    return () => {
+      mql.removeEventListener ? mql.removeEventListener('change', onChange) : mql.removeListener(onChange)
+    }
+  }, [])
+
+  const SLIDES = isMobile ? SLIDES_MOBILE : SLIDES_DESKTOP
 
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 60)
@@ -87,8 +104,11 @@ export default function Hero() {
 
           {/* Headline */}
           <h1 className="hero-h1">
-            <span className="hero-h1-plain">A Home</span>
-            <span className="hero-h1-gold">Away from Home</span>
+            <span className="hero-h1-brand">KMS PG</span>
+            <span className="hero-h1-sub">
+              <span className="hero-h1-plain">A Home</span>{' '}
+              <span className="hero-h1-gold">Away from Home</span>
+            </span>
           </h1>
 
           {/* Description */}
