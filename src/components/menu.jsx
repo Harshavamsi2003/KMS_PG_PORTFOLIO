@@ -140,7 +140,7 @@ export default function Menu() {
 
         <div className="menu-note rv">
           Management has the full right to change the food menu due to situation / season.
-          &nbsp;•&nbsp; சூழ்நிலை காரணமாக உணவு மாற்றம் செய்ய நிர்வாத்திற்கு உரிமை உண்டு.
+          &nbsp;•&nbsp; சூழ்நிலை காரணமாக உணவு மாற்றம் செய்ய நிர்வாகத்திற்கு உரிமை உண்டு.   
         </div>
       </div>
     </section>
