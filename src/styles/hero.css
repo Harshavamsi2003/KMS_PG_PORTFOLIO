@@ -1,50 +1,62 @@
 /* ═══════════════════════════════════════════════════════
-   KMS PG — HERO  ·  v8 Final
-   The EXACT layout the client liked on mobile —
-   applied consistently across all devices.
-   Left: eyebrow + headline + desc + 2 CTAs
-   Right/Below: cream Resident Access Card (same always)
+   KMS PG — HERO  ·  v9
+   Desktop: two-column, full viewport height — img 3
+   Mobile:  single-column, everything fits FIRST screen
+            no scroll needed to see the card
 ═══════════════════════════════════════════════════════ */
 
 /* ═══ KEYFRAMES ═══ */
-@keyframes kUp    { from { opacity:0; transform:translateY(26px)        } to { opacity:1; transform:none } }
-@keyframes kRight { from { opacity:0; transform:translateX(40px) scale(.96) } to { opacity:1; transform:none } }
-@keyframes kBurns { from { transform:scale(1.07) } to { transform:scale(1.0) } }
+@keyframes kUp    { from { opacity:0; transform:translateY(22px) } to { opacity:1; transform:none } }
+@keyframes kRight { from { opacity:0; transform:translateX(36px) scale(.96) } to { opacity:1; transform:none } }
 
-/* Ambient resting glow-breathe for primary CTAs */
-@keyframes kBtnGlow {
-  0%,100% { box-shadow: 0 12px 34px rgba(204,157,68,.40), inset 0 1px 0 rgba(255,255,255,.28); }
-  50%     { box-shadow: 0 14px 42px rgba(204,157,68,.58), inset 0 1px 0 rgba(255,255,255,.34); }
+/* Ken-Burns subtle zoom on each slide */
+@keyframes kBurnsLoop {
+  from { transform: scale(1.07); }
+  to   { transform: scale(1.0);  }
 }
 
-/* Card float — gentle vertical drift, no wobble (premium, not gimmicky) */
-@keyframes kFloat { 0%,100%{ transform:translateY(0) }
-                    50%    { transform:translateY(-9px) } }
+/* Card float — gentle vertical drift */
+@keyframes kFloat {
+  0%,100% { transform: translateY(0);   }
+  50%     { transform: translateY(-8px); }
+}
 
-/* Glow beat */
-@keyframes kGlow  { 0%,100%{ opacity:.22 } 50%{ opacity:.54 } }
-
-/* Scroll line */
-@keyframes kScroll{ 0%,100%{ opacity:.7; transform:scaleY(1) translateY(0) }
-                    55%    { opacity:.15; transform:scaleY(.3) translateY(8px) } }
-@keyframes kScrollFade{ from{ opacity:0; transform:translateY(10px) }
-                        to  { opacity:1; transform:none } }
+/* Ambient glow beat */
+@keyframes kGlow { 0%,100%{ opacity:.20 } 50%{ opacity:.50 } }
 
 /* WA bob */
-@keyframes kWA    { 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-5px) } }
+@keyframes kWA { 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-5px) } }
 
 /* Stat reveal */
-@keyframes kStat  { from{ opacity:0; transform:translateY(12px) scale(.93) }
-                    to  { opacity:1; transform:none } }
+@keyframes kStat {
+  from { opacity:0; transform:translateY(10px) scale(.94) }
+  to   { opacity:1; transform:none }
+}
+
+/* Perforated divider draw */
+@keyframes kPerf {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+/* KMS PG brand shimmer sweep */
+@keyframes kBrandShine {
+  0%   { background-position: 0% 50%;    }
+  100% { background-position: -220% 50%; }
+}
+
 
 /* ═══ SECTION SHELL ═══ */
 .hero {
   position: relative;
   min-height: 100vh;
+  /* Use dvh on modern browsers so the browser chrome doesn't push content off-screen on mobile */
+  min-height: 100dvh;
   overflow: hidden;
   display: flex;
   align-items: center;
 }
+
 
 /* ═══ PHOTO LAYERS — 3-image crossfade slideshow ═══ */
 .hero-photo-stack {
@@ -55,24 +67,20 @@
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: 50% 32%;   /* shows full room context, not cropped */
+  object-position: 50% 32%;
   opacity: 0;
   transform: scale(1.07);
   transition: opacity 1.6s var(--ease);
   will-change: opacity, transform;
-  background: #14171f; /* fallback so letterboxed edges never show white */
+  background: #14171f;
 }
 .hero-photo.is-active {
-  opacity: 1;
-  z-index: 1;
+  opacity: 1; z-index: 1;
   animation: kBurnsLoop 7s ease-out forwards;
 }
-@keyframes kBurnsLoop {
-  from { transform: scale(1.07); }
-  to   { transform: scale(1.0); }
-}
 
-/* Dark gradient — heaviest left+bottom, fades right so room is visible */
+
+/* ═══ OVERLAYS ═══ */
 .hero-grad {
   position: absolute; inset: 0; z-index: 1;
   background:
@@ -89,7 +97,6 @@
       transparent 55%
     );
 }
-
 .hero-vignette {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   background:
@@ -97,20 +104,23 @@
     radial-gradient(ellipse 50% 55% at 100% 0%,  rgba(9,11,18,.12) 0%, transparent 52%);
 }
 
-/* Gold+blue topline */
+/* Gold+blue topline accent */
 .hero-topline {
   position: absolute; top:0; left:0; right:0; height:2px; z-index:10;
   background: linear-gradient(90deg,
-    transparent 0%,
-    var(--blue-md) 18%,
-    var(--gold) 50%,
-    var(--blue-soft) 80%,
-    transparent 100%
+    transparent 0%, var(--blue-md) 18%,
+    var(--gold) 50%, var(--blue-soft) 80%, transparent 100%
   );
   opacity: .88;
 }
 
-/* ═══ LAYOUT — two-column desktop, single-column mobile ═══ */
+
+/* ═══════════════════════════════════════
+   LAYOUT
+   Desktop: two-column, padded generously
+   Mobile:  single-column, compact padding
+            so the card fits on screen 1
+═══════════════════════════════════════ */
 .hero-inner {
   position: relative; z-index: 4;
   width: 100%; max-width: 1200px;
@@ -122,16 +132,12 @@
   align-items: center;
 }
 
-/* ═══════════════════════
-   LEFT COLUMN
-═══════════════════════ */
+
+/* ═══ LEFT COLUMN ═══ */
 .hero-left { display: flex; flex-direction: column; }
 
-/* (live badge removed per client request) */
-
-/* ── Eyebrow ── */
+/* Eyebrow */
 .hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 7px;
   font-family: var(--font-body);
   font-size: 11px; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase;
   color: rgba(255,255,255,.46);
@@ -140,7 +146,7 @@
 }
 .hero--in .hero-eyebrow { animation: kUp .68s var(--ease) .13s both; }
 
-/* ── Headline ── */
+/* Headline */
 .hero-h1 {
   display: flex; flex-direction: column; gap: 1px;
   margin: 0 0 18px;
@@ -150,22 +156,19 @@
 
 .hero-h1-brand {
   display: block;
-  position: relative;
   font-family: var(--font-display);
-  font-size: clamp(3.1rem, 6.2vw, 5.4rem); font-weight: 800; letter-spacing: 2px;
-  line-height: 1; text-transform: uppercase;
-  background: linear-gradient(120deg, var(--gold-lt) 0%, var(--gold) 45%, #fff3d6 58%, var(--gold) 72%, var(--gold-lt) 100%);
+  font-size: clamp(3.1rem, 6.2vw, 5.4rem);
+  font-weight: 800; letter-spacing: 2px; line-height: 1; text-transform: uppercase;
+  background: linear-gradient(120deg,
+    var(--gold-lt) 0%, var(--gold) 45%,
+    #fff3d6 58%, var(--gold) 72%, var(--gold-lt) 100%);
   background-size: 220% 100%;
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 16px;
-  text-shadow: none;
   animation: kBrandShine 5s linear .9s infinite;
 }
-.hero-h1-sub {
-  display: block;
-  white-space: nowrap;
-}
+.hero-h1-sub   { display: block; white-space: nowrap; }
 .hero-h1-plain {
   font-family: var(--font-display);
   font-size: clamp(1.7rem, 3vw, 2.55rem);
@@ -184,44 +187,37 @@
   -webkit-text-fill-color: transparent;
 }
 
-@keyframes kBrandShine {
-  0%   { background-position: 0% 50%; }
-  100% { background-position: -220% 50%; }
-}
-
-/* ── Description ── */
+/* Description */
 .hero-desc {
   font-family: var(--font-body);
-  font-size: clamp(.9rem, 1.2vw, 1rem);
-  font-weight: 300; line-height: 1.80; color: rgba(255,255,255,.86);
-  max-width: 480px; margin-bottom: 32px;
+  font-size: clamp(.88rem, 1.1vw, .98rem);
+  font-weight: 300; line-height: 1.78; color: rgba(255,255,255,.86);
+  max-width: 480px; margin-bottom: 28px;
   text-shadow: 0 2px 14px rgba(0,0,0,.65);
   opacity: 0;
 }
 .hero--in .hero-desc { animation: kUp .78s var(--ease) .28s both; }
-.hero-desc strong { font-weight: 600; color: rgba(255,255,255,.90); }
+.hero-desc strong { font-weight: 600; color: rgba(255,255,255,.92); }
 
-/* ── CTA row ── */
+/* CTA row */
 .hero-btns {
   display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   opacity: 0;
 }
 .hero--in .hero-btns { animation: kUp .72s var(--ease) .36s both; }
 
-/* Gold button — calm at rest, refined lift + shine sweep on hover */
+/* Gold button */
 .hero-btn-gold {
   display: inline-flex; align-items: center; gap: 9px;
-  padding: 15px 30px;
+  padding: 14px 28px;
   background: var(--grad-gold); color: #241902;
   font-family: var(--font-body); font-size: 14px; font-weight: 700;
   border-radius: 9999px; text-decoration: none; letter-spacing: .3px;
   box-shadow: 0 10px 26px rgba(204,157,68,.34), inset 0 1px 0 rgba(255,255,255,.28);
   transition: transform .45s cubic-bezier(.22,1,.36,1),
-              box-shadow .45s cubic-bezier(.22,1,.36,1),
-              gap .3s var(--ease);
+              box-shadow .45s cubic-bezier(.22,1,.36,1), gap .3s var(--ease);
   position: relative; overflow: hidden; white-space: nowrap;
 }
-/* Sheen — sweeps once on hover, never loops at rest */
 .hero-btn-gold::before {
   content: '';
   position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
@@ -237,14 +233,12 @@
   box-shadow: 0 24px 54px rgba(204,157,68,.50), inset 0 1px 0 rgba(255,255,255,.36);
 }
 .hero-btn-gold:hover svg { transform: translateX(4px); }
-.hero-btn-gold:active { transform: translateY(-1px) scale(.97); transition-duration: .15s; }
+.hero-btn-gold:active  { transform: translateY(-1px) scale(.97); transition-duration: .15s; }
 
-/* Ghost button */
+/* Ghost button (kept for flexibility, not in current markup) */
 .hero-btn-ghost {
-  display: inline-flex; align-items: center;
-  padding: 15px 26px;
-  background: rgba(255,255,255,.07);
-  border: 1.5px solid rgba(255,255,255,.24);
+  display: inline-flex; align-items: center; padding: 14px 24px;
+  background: rgba(255,255,255,.07); border: 1.5px solid rgba(255,255,255,.24);
   color: rgba(255,255,255,.82);
   font-family: var(--font-body); font-size: 14px; font-weight: 500;
   border-radius: 9999px; text-decoration: none; letter-spacing: .2px;
@@ -256,11 +250,10 @@
   color: #fff; transform: translateY(-2px);
 }
 
-/* ══════════════════════════════════════
+
+/* ═══════════════════════════════════════
    RIGHT — RESIDENT ACCESS CARD
-   Premium frosted-glass look — transparent,
-   blurred, background photo visible through it.
-══════════════════════════════════════ */
+═══════════════════════════════════════ */
 .hero-card {
   background: linear-gradient(162deg, rgba(20,16,8,.40) 0%, rgba(20,16,8,.22) 100%);
   border: 1px solid rgba(255,255,255,.26);
@@ -274,25 +267,22 @@
     0 1px 0 rgba(255,255,255,.30) inset,
     0 0 0 1px rgba(255,255,255,.08);
   opacity: 0;
-  transform-origin: center;
 }
 .hero--in .hero-card {
   animation: kRight .96s var(--ease) .30s both, kFloat 7.5s ease-in-out 1.8s infinite;
 }
 .hero-card:hover {
-  transform: rotate(0deg) translateY(-8px) !important;
+  transform: translateY(-8px) !important;
   box-shadow: 0 52px 110px rgba(0,0,0,.50), 0 1px 0 rgba(255,255,255,.30) inset;
   transition: transform .44s var(--ease), box-shadow .44s;
 }
-
-/* Subtle glass sheen */
 .hero-card::after {
   content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
   background: linear-gradient(140deg, rgba(255,255,255,.16) 0%, transparent 40%);
   mix-blend-mode: overlay;
 }
 
-/* Ambient gold glow */
+/* Ambient glow */
 .hc-glow {
   position: absolute; top: -70px; right: -60px;
   width: 220px; height: 220px; border-radius: 50%;
@@ -304,7 +294,7 @@
 /* Card header */
 .hc-head {
   display: flex; align-items: center; justify-content: space-between;
-  gap: 10px; margin-bottom: 22px; position: relative; z-index: 1;
+  gap: 10px; margin-bottom: 20px; position: relative; z-index: 1;
   opacity: 0;
 }
 .hero--in .hc-head { animation: kUp .6s var(--ease) .36s both; }
@@ -313,13 +303,13 @@
   letter-spacing: 1.8px; text-transform: uppercase; color: rgba(255,255,255,.62);
 }
 
-/* Stats 2×2 grid */
+/* Stats 2×2 */
 .hc-grid {
   display: grid; grid-template-columns: repeat(2,1fr);
-  gap: 14px 16px; margin-bottom: 20px; position: relative; z-index: 1;
+  gap: 12px 16px; margin-bottom: 18px; position: relative; z-index: 1;
 }
 .hc-stat {
-  display: flex; flex-direction: column; gap: 4px;
+  display: flex; flex-direction: column; gap: 3px;
   opacity: 0;
   transition: transform .3s var(--ease);
 }
@@ -329,7 +319,7 @@
 
 .hc-num {
   font-family: var(--font-display);
-  font-size: 1.65rem; font-weight: 700; color: #fff; line-height: 1; letter-spacing: -.4px;
+  font-size: 1.60rem; font-weight: 700; color: #fff; line-height: 1; letter-spacing: -.4px;
   text-shadow: 0 2px 14px rgba(0,0,0,.35);
   display: inline-block;
   transition: transform .3s var(--ease);
@@ -337,14 +327,14 @@
 }
 .hc-sup { font-size: .60em; color: var(--gold-lt); vertical-align: super; letter-spacing: 0; }
 .hc-lbl {
-  font-family: var(--font-body); font-size: 9px; font-weight: 600;
-  color: rgba(255,255,255,.58); letter-spacing: .9px; text-transform: uppercase;
+  font-family: var(--font-body); font-size: 8.5px; font-weight: 600;
+  color: rgba(255,255,255,.55); letter-spacing: .9px; text-transform: uppercase;
 }
 
-/* Perforated divider — ticket stub motif */
+/* Perforated divider */
 .hc-perf {
   position: relative; height: 0;
-  margin: 6px -26px 20px;
+  margin: 4px -26px 18px;
   border-top: 2px dashed rgba(255,255,255,.22);
   transform: scaleX(0); transform-origin: left center;
   opacity: 0;
@@ -353,41 +343,34 @@
 .hc-perf::before, .hc-perf::after {
   content: ''; position: absolute; top: -7px;
   width: 13px; height: 13px; border-radius: 50%;
-  background: transparent;
-  border: 2px dashed rgba(255,255,255,.22);
+  background: transparent; border: 2px dashed rgba(255,255,255,.22);
 }
 .hc-perf::before { left: -7px; }
 .hc-perf::after  { right: -7px; }
 
-@keyframes kPerf {
-  from { transform: scaleX(0); opacity: 0; }
-  to   { transform: scaleX(1); opacity: 1; }
-}
-
 /* Price row */
 .hc-price-row {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 16px; position: relative; z-index: 1;
+  margin-bottom: 14px; position: relative; z-index: 1;
   opacity: 0;
 }
 .hero--in .hc-price-row { animation: kUp .6s var(--ease) .92s both; }
 .hc-from {
-  font-family: var(--font-body); font-size: 10px; font-weight: 700;
-  letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.58);
+  font-family: var(--font-body); font-size: 9.5px; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.55);
 }
 .hc-price {
   font-family: var(--font-display);
-  font-size: 1.90rem; font-weight: 700; color: #fff; line-height: 1; letter-spacing: -.4px;
+  font-size: 1.85rem; font-weight: 700; color: #fff; line-height: 1; letter-spacing: -.4px;
   text-shadow: 0 2px 14px rgba(0,0,0,.35);
 }
-.hc-price em { font-style: normal; font-size: .47em; font-weight: 400; color: rgba(255,255,255,.58); }
+.hc-price em { font-style: normal; font-size: .46em; font-weight: 400; color: rgba(255,255,255,.55); }
 
-/* Card CTA — gold pill on glass, refined lift + sheen on hover only */
+/* Enquire Now CTA */
 .hc-cta {
   display: flex; align-items: center; justify-content: center;
-  width: 100%; padding: 15px;
-  background: var(--grad-gold);
-  color: #241902;
+  width: 100%; padding: 14px;
+  background: var(--grad-gold); color: #241902;
   font-family: var(--font-body); font-size: 14px; font-weight: 700;
   border-radius: 9999px; text-decoration: none; letter-spacing: .4px;
   box-shadow: 0 8px 22px rgba(204,157,68,.32);
@@ -409,30 +392,6 @@
 }
 .hc-cta:active { transform: scale(.97); transition-duration: .15s; }
 
-/* ═══ SCROLL INDICATOR — centred bottom ═══ */
-.hero-scroll {
-  position: absolute; bottom: 28px; left: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  z-index: 5; opacity: 0; pointer-events: none;
-}
-.hero--in .hero-scroll { animation: kScrollFade .7s var(--ease) 1.4s both; }
-
-.hero-scroll-bar {
-  display: block; width: 1.5px; height: 50px;
-  background: linear-gradient(to bottom,
-    rgba(204,157,68,.0),
-    rgba(204,157,68,.78),
-    rgba(204,157,68,.0)
-  );
-  border-radius: 1px;
-  animation: kScroll 2.8s ease-in-out infinite;
-}
-.hero-scroll-lbl {
-  font-family: var(--font-body);
-  font-size: 8px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(255,255,255,.24);
-}
 
 /* ═══ WA FLOAT ═══ */
 .wa-float {
@@ -450,88 +409,153 @@
 .wa-float:hover { box-shadow: 0 10px 32px rgba(37,211,102,.62); animation-play-state: paused; }
 .wa-txt { white-space: nowrap; }
 
-/* ═══════════════════════════
-   RESPONSIVE BREAKPOINTS
-═══════════════════════════ */
 
-/* 1140 — tighten */
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+
+/* 1140 — tighten columns */
 @media (max-width: 1140px) {
   .hero-inner { grid-template-columns: 1fr 340px; gap: 48px; padding: 148px 32px 96px; }
 }
 
-/* 960 — stack vertically */
+/* ─── 960 — stack vertically (tablet + large phone in landscape) ─── */
 @media (max-width: 960px) {
+  .hero {
+    /* Centre the stacked content — don't force full-viewport stretch on tablet */
+    align-items: flex-start;
+  }
   .hero-inner {
     grid-template-columns: 1fr;
-    gap: 36px;
-    padding: 150px 32px 100px;
-    max-width: 600px;
+    gap: 24px;
+    /* Top = navbar clearance; bottom tight; max-width keeps lines readable */
+    padding: 100px 32px 48px;
+    max-width: 560px;
   }
   .hero-card {
     width: 100%; max-width: 480px;
-    /* Remove floating tilt on stacked layout */
     animation: kUp .9s var(--ease) .34s both !important;
   }
   .hero-desc { max-width: 100%; }
-
-  /* Dedicated portrait photo set is used here (homeph1–3) — recentre slightly higher */
   .hero-photo { object-position: 50% 22%; }
 }
 
-/* 640 — phone */
+/* ─── 640 — phone portrait ─── */
 @media (max-width: 640px) {
-  .hero-inner { padding: 118px 20px 88px; gap: 26px; }
+  .hero {
+    align-items: flex-start;
+    min-height: 100dvh;
+  }
+  .hero-inner {
+    padding: 88px 20px 28px;  /* top clears navbar + a little air; bottom tight */
+    gap: 22px;                 /* breathing room between left column and card */
+    max-width: 100%;
+    min-height: calc(100dvh - 0px);
+    justify-content: center;
+    align-content: center;
+  }
 
-  /* Dedicated portrait photo (homeph1–3) — show the framed shot, not the ceiling */
-  .hero-photo { object-position: 50% 24%; }
+  /* Photo */
+  .hero-photo { object-position: 50% 28%; }
 
+  /* Overlay */
+  .hero-grad {
+    background:
+      linear-gradient(150deg,
+        rgba(9,11,18,.88) 0%, rgba(9,11,18,.78) 35%,
+        rgba(9,11,18,.52) 58%, rgba(9,11,18,.28) 78%,
+        rgba(9,11,18,.12) 100%
+      ),
+      linear-gradient(to top,
+        rgba(9,11,18,.72) 0%, rgba(9,11,18,.28) 32%, transparent 58%
+      );
+  }
+
+  /* Eyebrow — a little more air below it */
+  .hero-eyebrow { font-size: 9px; letter-spacing: 1.4px; margin-bottom: 10px; }
+
+  /* Headline — KMS PG sits higher, subtitle slightly separated */
+  .hero-h1 { margin-bottom: 0; gap: 2px; }
+  .hero-h1-brand {
+    font-size: clamp(2.6rem, 12vw, 3.5rem);
+    letter-spacing: 1px; margin-bottom: 8px;
+  }
+  .hero-h1-sub    { white-space: nowrap; }
   .hero-h1-plain,
-  .hero-h1-gold  { font-size: clamp(1.25rem, 4.6vw, 1.6rem); letter-spacing: -.4px; }
-  .hero-h1-brand { font-size: clamp(2.5rem, 11vw, 3.4rem); letter-spacing: 1px; margin-bottom: 10px; }
-  .hero-desc     { font-size: .88rem; margin-bottom: 24px; }
+  .hero-h1-gold   { font-size: clamp(1.15rem, 4.8vw, 1.45rem); letter-spacing: -.3px; }
 
-  .hero-btns { flex-direction: row; flex-wrap: wrap; gap: 10px; }
-  .hero-btn-gold  { flex: 1 1 auto; justify-content: center; padding: 14px 20px; }
-  .hero-btn-ghost { flex: 1 1 auto; justify-content: center; padding: 14px 18px; font-size: 13px; }
+  /* Description — more top breathing, keeps compact line-height */
+  .hero-desc {
+    font-size: .84rem; line-height: 1.68;
+    margin-top: 10px; margin-bottom: 16px;
+  }
 
-  .hero-card { padding: 22px 20px 20px; border-radius: 22px; }
-  .hc-perf   { margin: 4px -20px 16px; }
-  .hc-num    { font-size: 1.45rem; }
-  .hc-price  { font-size: 1.70rem; }
+  /* Button — full width, a little taller so it feels tappable */
+  .hero-btns { flex-direction: row; gap: 8px; }
+  .hero-btn-gold {
+    flex: 1 1 auto; justify-content: center;
+    padding: 13px 16px; font-size: 13px;
+  }
+
+  /* Card — a touch more internal padding, better row spacing */
+  .hero-card { padding: 18px 20px 18px; border-radius: 20px; }
+  .hc-head    { margin-bottom: 14px; }
+  .hc-eyebrow { font-size: 8.5px; }
+  .hc-grid    { gap: 12px 16px; margin-bottom: 14px; }
+  .hc-stat    { gap: 4px; }
+  .hc-num     { font-size: 1.38rem; }
+  .hc-lbl     { font-size: 7.5px; }
+  .hc-perf    { margin: 4px -20px 14px; }
+  .hc-price-row { margin-bottom: 14px; }
+  .hc-from    { font-size: 8.5px; }
+  .hc-price   { font-size: 1.58rem; }
+  .hc-cta     { padding: 13px; font-size: 13px; }
 
   /* WA → icon only */
   .wa-txt   { display: none; }
-  .wa-float { padding: 14px; border-radius: 50%; bottom: 20px; right: 20px; }
+  .wa-float { padding: 13px; border-radius: 50%; bottom: 18px; right: 18px; }
 }
 
-/* Small phone */
+/* ─── 380 — very small phone ─── */
 @media (max-width: 380px) {
-  .hero-inner { padding: 108px 16px 80px; }
-  .hero-h1-plain, .hero-h1-gold { font-size: 1.15rem; }
-  .hero-h1-brand { font-size: 2.2rem; letter-spacing: .5px; }
-  .hc-num   { font-size: 1.3rem; }
-  .hc-price { font-size: 1.55rem; }
+  .hero-inner { padding: 80px 14px 24px; gap: 18px; }
+  .hero-eyebrow { margin-bottom: 8px; }
+  .hero-h1-brand { font-size: 2.3rem; margin-bottom: 6px; }
+  .hero-h1-plain,
+  .hero-h1-gold  { font-size: 1.05rem; }
+  .hero-desc     { font-size: .79rem; margin-top: 8px; margin-bottom: 13px; }
+  .hero-btn-gold { font-size: 12px; padding: 11px 14px; }
+  .hc-num   { font-size: 1.2rem; }
+  .hc-price { font-size: 1.35rem; }
 }
 
-/* Landscape phones */
+/* ─── Landscape phones — tighten vertically ─── */
 @media (max-height: 500px) and (orientation: landscape) {
   .hero { min-height: auto; }
-  .hero-inner { padding: 90px 28px 56px; grid-template-columns: 1fr 300px; gap: 32px; }
-  .hero-card  { animation: kRight .96s var(--ease) .30s both, kFloat 7.5s ease-in-out 1.8s infinite !important; }
-  .hero-h1-plain, .hero-h1-gold { font-size: 1.15rem; }
-  .hero-h1-brand { font-size: 2rem; }
-  .hero-scroll { display: none; }
+  .hero-inner {
+    padding: 80px 28px 40px;
+    grid-template-columns: 1fr 300px;
+    gap: 32px;
+    max-width: 1200px;
+  }
+  .hero-card { animation: kRight .96s var(--ease) .30s both, kFloat 7.5s ease-in-out 1.8s infinite !important; }
+  .hero-h1-brand { font-size: 2rem; margin-bottom: 6px; }
+  .hero-h1-plain,
+  .hero-h1-gold  { font-size: 1.1rem; }
+  .hero-desc     { font-size: .82rem; margin-bottom: 14px; }
+  .hc-num   { font-size: 1.25rem; }
+  .hc-price { font-size: 1.45rem; }
 }
 
-/* Reduced motion — keep animations but freeze purely decorative ones */
+/* ─── Reduced motion ─── */
 @media (prefers-reduced-motion: reduce) {
   .hero-photo,
   .hc-glow,
   .wa-float,
-  .hero-scroll-bar,
   .hero-btn-gold,
   .hero-h1-brand,
   .hc-cta { animation: none !important; }
-  .hc-stat:hover, .hc-stat:hover .hc-num { transform: none !important; }
+  .hc-stat:hover,
+  .hc-stat:hover .hc-num { transform: none !important; }
   .hero-photo { transform: none !important; transition: opacity .6s ease !important; }
 }
