@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+
+  <!-- Dark navy rounded square background -->
+  <rect width="32" height="32" rx="7" fill="#0d0f1a"/>
+
+  <!-- Subtle inner border ring — adds depth at larger sizes, invisible at 16px -->
+  <rect x="1" y="1" width="30" height="30" rx="6.2" fill="none" stroke="#cc9d44" stroke-width="0.6" stroke-opacity="0.35"/>
+
+  <!-- Gold "K" — Playfair-style thick/thin serif drawn as a path
+       so it renders crisp at every size without needing font loading -->
+  <!-- Left vertical stem -->
+  <rect x="8" y="7" width="4.5" height="18" rx="0.8" fill="#cc9d44"/>
+
+  <!-- Upper arm — angled top-right -->
+  <polygon points="12.5,16 22,7 26.5,7 16,16.2" fill="#cc9d44"/>
+
+  <!-- Lower leg — angled bottom-right, slightly wider for serif feel -->
+  <polygon points="12.5,15.8 16,15.8 26.5,25 22,25" fill="#cc9d44"/>
+
+</svg>
