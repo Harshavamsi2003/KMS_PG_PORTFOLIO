@@ -130,10 +130,9 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* ════ RIGHT / BOTTOM — Resident Access Card (glass) ════ */}
+        {/* ════ RIGHT / BOTTOM — Resident Access Card ════ */}
         <aside className="hero-card" aria-label="Resident Access Card">
 
-          {/* Ambient glow decoration */}
           <div className="hc-glow"  aria-hidden="true" />
 
           {/* Card header */}
@@ -168,12 +167,6 @@ export default function Hero() {
 
         </aside>
 
-      </div>
-
-      {/* ── Scroll indicator ── */}
-      <div className="hero-scroll" aria-hidden="true">
-        <span className="hero-scroll-bar" />
-        <span className="hero-scroll-lbl">Scroll</span>
       </div>
 
       {/* ── WA float ── */}
